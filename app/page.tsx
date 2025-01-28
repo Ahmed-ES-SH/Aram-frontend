@@ -1,0 +1,30 @@
+import Blog_section from "./_components/_website/_homepage/Blog_section";
+import BlogSlider from "./_components/_website/_homepage/Blog_slider";
+import Cards_section from "./_components/_website/_homepage/Cards_section";
+import Contactus_section from "./_components/_website/_homepage/Contactus_Section";
+import Organizations_section from "./_components/_website/_homepage/Organizations_section";
+import PromoSection from "./_components/_website/_homepage/Promosection";
+import Selected_HeroSection from "./_components/_website/_homepage/Selected_HeroSection";
+import Services_section from "./_components/_website/_homepage/Services_section";
+import StatisticsSection from "./_components/_website/_homepage/StatisticsSection";
+import SiderbarAds from "./_components/_website/_sidebarAds/SiderbarAds";
+import Footer from "./_components/_website/Footer";
+import Navbar from "./_components/_website/Navbar";
+
+export default function Home() {
+  return (
+    <>
+      <Selected_HeroSection />
+      <PromoSection />
+      <Cards_section />
+      <Services_section />
+      <Organizations_section />
+      <StatisticsSection />
+      <BlogSlider />
+      <Contactus_section />
+      <div className="w-fit min-h-screen fixed top-0 right-0 z-40 overflow-hidden">
+        <SiderbarAds />
+      </div>
+    </>
+  );
+}
