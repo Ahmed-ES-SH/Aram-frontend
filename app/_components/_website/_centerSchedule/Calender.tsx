@@ -8,12 +8,14 @@ interface props {
   bookedAppointments: any;
   setSelectedDay: any;
   selectedDay: any;
+  stepError: any;
 }
 
 export default function Calender({
   setSelectedDay,
   selectedDay,
   bookedAppointments,
+  stepError,
 }: props) {
   const [bookDay, setBookDay] = useState(new Date());
   const currentDate = new Date(); // الحصول على التاريخ الحالي
@@ -50,7 +52,7 @@ export default function Calender({
 
   return (
     <>
-      <div className="w-[90%] mx-auto max-md:w-[97%] ">
+      <div className="w-[90%]  mx-auto max-md:w-[97%] ">
         <div className="flex items-center justify-between pb-4 border-b border-main_orange mb-4">
           <button
             onClick={handlePrevMonth}
@@ -92,7 +94,7 @@ export default function Calender({
             <button
               key={day.toISOString()}
               onClick={() => !isPastDay(day) && setSelectedDay(day)} // لا يمكن اختيار الأيام السابقة
-              className={`py-8 px-4 text-center rounded-lg ${
+              className={`py-8 px-4 max-md:py-4 max-md:px-2 text-center rounded-lg ${
                 selectedDay?.toDateString() === day.toDateString()
                   ? "bg-main_orange text-white"
                   : isPastDay(day)

@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 import { instance } from "@/app/Api/axios";
 import { Cardcontext } from "@/app/context/CartContext";
 import { useDataContext } from "@/app/context/DataContext";
+import RandomOrganizationsSidebar from "../RandomOrganizationSidebar";
 
 interface cardType {
   id: number;
@@ -37,10 +38,13 @@ interface cardType {
   quantity: number;
 }
 
-export default function CardPage() {
+interface props {
+  api: string;
+}
+
+export default function CardPage({ api }: props) {
   const { language }: any = UseVariables();
-  const { cartitems, addToCart } = Cardcontext();
-  const { activeOrganizations } = useDataContext();
+  const { cartitems, addToCart }: any = Cardcontext();
   const router = useRouter();
   const params = useParams();
   const id = params.cardId;
@@ -72,7 +76,7 @@ export default function CardPage() {
   useEffect(() => {
     const getdata = async () => {
       try {
-        const response = await instance.get(`/card-type/${id}`);
+        const response = await instance.get(`/${api}/${id}`);
         const data = response.data.data;
         console.log(data);
         if (data.features_ar && data.features_en) {
@@ -104,15 +108,20 @@ export default function CardPage() {
   }, []);
 
   const handlesubmit = (card: cardType) => {
-    addToCart(card);
-    router.push("/cart");
+    if (cartitems.find((carditem: any) => carditem.id === card.id)) {
+      alert("This item is already in the cart!"); // إشعار
+      return;
+    } else {
+      addToCart([...cartitems, card]); // إضافة العنصر للسلة
+      router.push("/cart");
+    }
   };
 
   if (loading) return <Loading />;
 
   return (
     <>
-      <div className="bg-gray-50 dark:bg-main_dash mt-16 ">
+      <div className="bg-gray-50 dark:bg-main_dash mt-20 ">
         <div className="w-full  mx-auto p-3 max-md:p-2 flex items-start justify-between max-lg:flex-col  gap-3 mt-10">
           {/* البطاقة الرئيسية */}
           <motion.div
@@ -124,7 +133,7 @@ export default function CardPage() {
           >
             {/* صورة البطاقة */}
             <div className="relative mb-6">
-              <CardComponent bg_img="/cards/card_1.jpg" />
+              <CardComponent bg_img={card.image ? card.image : "/public"} />
             </div>
 
             {/* العنوان و تفاصيل البطاقة */}
@@ -206,83 +215,7 @@ export default function CardPage() {
             <Slider_cards />
           </motion.div>
 
-          {/* القسم الجانبي */}
-          <motion.div
-            className="bg-white dark:bg-secend_dash rounded-lg shadow-lg p-3 max-lg:p-2 w-[25%] max-lg:w-full"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Separator
-              bg_dark="dark:bg-secend_dash"
-              text={language == "EN" ? "Aram Orgenizations" : "مراكز آرام"}
-            />
-            <div className="flex flex-col items-start justify-center mx-auto gap-4 max-lg:flex-row max-lg:flex-wrap w-full">
-              {activeOrganizations
-                .slice(0, 5)
-                .map((org: any, index: number) => {
-                  const description_en =
-                    org.description_en && org.description_en.length > 40
-                      ? org.description_en.slice(0, 40) + "..."
-                      : org.description_en;
-                  const description_ar =
-                    org.description_ar && org.description_ar.length > 40
-                      ? org.description_ar.slice(0, 40) + "..."
-                      : org.description_ar;
-                  return (
-                    <Link
-                      className="w-full block"
-                      key={index}
-                      href={`/organizations/${org.id}`}
-                    >
-                      <motion.div
-                        key={index}
-                        className="relative h-[250px] w-full max-lg:w-[48%] max-md:w-[98%] bg-cover bg-center group cursor-pointer rounded-lg dark:bg-main_dash overflow-hidden"
-                        style={{ backgroundImage: `url(${org.image})` }}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {/* Overlay */}
-                        <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg"></div>
-
-                        {/* Content */}
-                        <div className="flex items-center gap-3 absolute -top-40 left-4 duration-200 group-hover:top-3">
-                          <div className="flex items-center justify-center w-[32px] h-[32px] border bg-gray-100 rounded-full">
-                            <Img
-                              src={org.icon ? org.icon : "/logo.png"}
-                              className="w-[30px] h-[30px] rounded-full"
-                            />
-                          </div>
-                          <p className="text-white font-semibold text-[12px]">
-                            {language == "EN" ? org.title_en : org.title_ar}
-                          </p>
-                        </div>
-                        <div
-                          style={{
-                            direction: language == "EN" ? "ltr" : "rtl",
-                          }}
-                          className={`group-hover:bottom-6 gap-4 absolute -bottom-40 ${
-                            language == "EN" ? "left-6" : "right-6"
-                          } duration-200`}
-                        >
-                          <div className="content flex flex-col items-start">
-                            <p className="text-left font-bold mb-1 text-white dark:text-white">
-                              {language == "EN"
-                                ? description_en
-                                : description_ar}
-                            </p>
-                            <h3 className="text-[12px] text-left font-semibold text-teal-400">
-                              {org.category && org.category}
-                            </h3>
-                          </div>
-                        </div>
-                      </motion.div>
-                    </Link>
-                  );
-                })}
-            </div>
-          </motion.div>
+          <RandomOrganizationsSidebar length={5} />
         </div>
       </div>
     </>

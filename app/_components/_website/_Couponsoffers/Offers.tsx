@@ -25,7 +25,6 @@ export default function Offers() {
   const toggleOpen = (offer: any) => {
     setIsOpen(true);
     setSelectedOffer(offer);
-    console.log("click");
   };
 
   const handlePageChange = (newPage: any) => {
@@ -40,7 +39,7 @@ export default function Offers() {
     const getOffers = async (page: number) => {
       try {
         setLoading(true);
-        const response = await instance.get(`/all-offers?page=${page}`);
+        const response = await instance.get(`/active-offers?page=${page}`);
         if (response.status === 200) {
           const data = response.data.data;
           const pagination = response.data.pagination;

@@ -113,9 +113,9 @@ export default function CartPage() {
 
   return (
     <>
-      <div className="flex items-start max-lg:flex-col gap-4 max-lg:gap-2 p-6 max-md:p-2 mt-16 bg-white dark:bg-main_dash ">
-        <div className="table-products overflow-auto w-[60%] max-lg:w-full flex-grow">
-          <table className="min-w-full max-h-screen overflow-x-auto bg-gray-100 dark:bg-secend_dash text-sm rounded-md h-[50vh]">
+      <div className="flex items-start max-xl:flex-col gap-4 max-xl:gap-2 p-6 max-md:p-2 mt-16 bg-white dark:bg-secend_dash ">
+        <div className="table-products  h-screen max-xl:h-fit  overflow-auto w-[60%] max-xl:w-full flex-grow">
+          <table className="min-w-full border dark:border-gray-700 rounded-lg shadow-lg max-h-screen min-h-[52vh] overflow-x-auto bg-gray-100 dark:bg-main_dash text-sm  ">
             <thead className="ltr:text-left rtl:text-right border-b border-black  dark:border-gray-300">
               <tr>
                 {headers.map((header, index) => (
@@ -131,7 +131,7 @@ export default function CartPage() {
             <tbody className="divide-y divide-gray-200">
               {cartitems && cartitems.length > 0 ? (
                 cartitems.map((item, index) => (
-                  <tr className="" key={index}>
+                  <tr className="h-[80px]" key={index}>
                     <td className="whitespace-nowrap  px-4 py-2   font-medium text-gray-900">
                       <div className="w-fit mr-auto">
                         <Minicard
@@ -139,13 +139,13 @@ export default function CartPage() {
                         />
                       </div>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2  text-gray-700 dark:text-white">
+                    <td className="whitespace-nowrap px-4 py-2 h-[20px]  text-gray-700 dark:text-white">
                       {language == "EN" ? item.title_en : item.title_ar}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2  text-gray-700 dark:text-white">
+                    <td className="whitespace-nowrap px-4 py-2 h-[20px]  text-gray-700 dark:text-white">
                       ${item.price}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2  text-gray-700 dark:text-white">
+                    <td className="whitespace-nowrap px-4 py-2 h-[20px]  text-gray-700 dark:text-white">
                       <div className="flex items-center justify-center w-fit mr-auto  border dark:border-gray-600 rounded-sm shadow-sm px-2">
                         <div className="flex items-center gap-1 ">
                           <button
@@ -168,7 +168,7 @@ export default function CartPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2  text-gray-700 dark:text-white">
+                    <td className="whitespace-nowrap px-4 py-2 h-[20px]  text-gray-700 dark:text-white">
                       <button
                         onClick={() => removefromcard(item)}
                         className="cursor-pointer hover:text-red-600 duration-200 text-red-400"
@@ -225,7 +225,7 @@ export default function CartPage() {
               )}
             </tbody>
           </table>
-          <div className="space-y-4 mt-2 w-[40%]  max-md:w-full rounded-lg border border-gray-200 bg-gray-100 p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
+          <div className="space-y-4 mt-2 w-[40%]  max-xl:w-full rounded-lg border border-gray-200 bg-gray-100 p-4 shadow-sm dark:border-gray-700 dark:bg-main_dash sm:p-6">
             <form className="space-y-4">
               <div>
                 <label
@@ -239,22 +239,22 @@ export default function CartPage() {
                 <input
                   type="text"
                   id="voucher"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                  className="block outline-none w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                   placeholder=""
                   required
                 />
               </div>
               <button
                 type="submit"
-                className="flex w-full items-center justify-center rounded-lg bg-main_orange border border-transparent duration-200 hover:bg-transparent hover:text-white hover:border-main_orange hover:scale-105 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="flex w-full items-center justify-center rounded-lg bg-main_orange border border-transparent duration-200 hover:bg-transparent hover:text-black dark:hover:text-white hover:border-main_orange hover:scale-105 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 {language == "EN" ? "Apply Code" : "تطبيق الرمز"}
               </button>
             </form>
           </div>
         </div>
-        <div className="mx-auto h-[50vh]  max-lg:h-fit w-[40%] max-lg:w-full mt-6  flex-1 space-y-6 lg:mt-0 ">
-          <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-100 p-4 shadow-sm dark:border-gray-700 h-full dark:bg-gray-800 sm:p-6">
+        <div className="mx-auto h-[50vh]  max-xl:h-fit w-[40%] max-xl:w-full mt-6  flex-1 space-y-6 lg:mt-0 ">
+          <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-100 p-4  dark:border-gray-700 h-full dark:bg-main_dash shadow-lg sm:p-6">
             <p className="text-xl pb-2 border-b border-main_orange font-semibold text-gray-900 dark:text-white">
               {language == "EN" ? "Order Summary" : "ملخص الطلب"}
             </p>

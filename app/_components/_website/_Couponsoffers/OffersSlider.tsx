@@ -76,7 +76,7 @@ export default function OffersSlider() {
         {offers &&
           offers.length > 0 &&
           offers.map((offer, i) => (
-            <SwiperSlide key={i}>
+            <SwiperSlide className="rounded-lg dark:bg-main_dash" key={i}>
               <OfferSlide toggleOpen={toggleOpen} offer={offer} />
             </SwiperSlide>
           ))}

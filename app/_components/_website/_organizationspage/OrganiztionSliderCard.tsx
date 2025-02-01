@@ -6,7 +6,11 @@ import Img from "../../Img";
 import { UseVariables } from "@/app/context/VariablesContext";
 import Link from "next/link";
 
-export default function OrganiztionSliderCard({ organization }: any) {
+interface props {
+  organization: any;
+}
+
+export default function OrganiztionSliderCard({ organization }: props) {
   const { language }: any = UseVariables();
   const currentlocation = organization.location
     ? JSON.parse(organization.location)

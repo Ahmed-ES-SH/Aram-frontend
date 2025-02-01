@@ -95,7 +95,7 @@ export default function Cards_section() {
                   transition={{ duration: 0.5, delay: index * 0.2 }} // تأخير بناءً على الترتيب
                   whileHover={{ scale: 1.05 }} // تأثير تكبير عند التمرير
                 >
-                  <ProductCard card={card} />
+                  <ProductCard direct="cards" card={card} />
                 </motion.li>
               ))}
             </motion.ul>

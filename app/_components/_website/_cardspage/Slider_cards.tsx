@@ -97,7 +97,7 @@ export default function Slider_part() {
         >
           {cards.map((card, index) => (
             <SwiperSlide className="dark:bg-main_dash w-full" key={index}>
-              <ProductCard card={card} />
+              <ProductCard direct="cards" card={card} />
             </SwiperSlide>
           ))}
         </Swiper>

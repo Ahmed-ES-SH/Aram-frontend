@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineCopy } from "react-icons/ai";
 import Img from "../../Img";
+import { FaCalendarAlt, FaTag } from "react-icons/fa";
+import { UseVariables } from "@/app/context/VariablesContext";
 
 interface OfferPopupProps {
   offer: any;
@@ -15,6 +17,7 @@ export default function OfferPopup({
   isOpen,
   onClose,
 }: OfferPopupProps) {
+  const { language } = UseVariables();
   const [isCopied, setIsCopied] = useState(false);
 
   const copyCode = () => {
@@ -57,7 +60,9 @@ export default function OfferPopup({
             />
             <Img
               src={
-                offer?.organization?.icon ? offer?.organization.icon : "/public"
+                offer?.organization && offer?.organization?.icon
+                  ? offer?.organization.icon
+                  : "/public"
               }
               className=" absolute bottom-2 right-2 border w-12 h-12 bg-white rounded-full shadow-sm  object-cover"
             />
@@ -72,9 +77,10 @@ export default function OfferPopup({
           </div>
 
           {/* Discount Value */}
-          <div className="mt-4 flex items-center gap-2">
+          <div className="mt-4 flex items-center gap-3 bg-gray-100 p-3 rounded-lg shadow-sm">
+            <FaTag className="text-yellow-500 text-xl" />
             <span className="text-lg font-semibold text-gray-800">
-              Discount:
+              {language == "EN" ? "Discount:" : "الخصم:"}
             </span>
             <span className="text-xl font-bold text-green-500">
               {offer.discount_value}%
@@ -82,13 +88,20 @@ export default function OfferPopup({
           </div>
 
           {/* Validity Dates */}
-          <div className="mt-2 text-sm text-gray-600">
-            <p>
-              Valid from:{" "}
-              <span className="font-medium">{offer.start_date}</span>
+          <div className="mt-2 text-sm text-gray-700 bg-gray-100 p-3 rounded-lg shadow-sm">
+            <p className="flex items-center gap-2">
+              <FaCalendarAlt className="text-sky-500" />
+              {language == "EN" ? "Valid from:" : "بداية التفعيل :"}
+              <span className="font-semibold text-gray-800">
+                {offer.start_date}
+              </span>
             </p>
-            <p>
-              Valid until: <span className="font-medium">{offer.end_date}</span>
+            <p className="flex items-center gap-2 mt-1">
+              <FaCalendarAlt className="text-red-500" />
+              {language == "EN" ? "Valid until:" : "نهاية التفعيل :"}
+              <span className="font-semibold text-gray-800">
+                {offer.end_date}
+              </span>
             </p>
           </div>
 

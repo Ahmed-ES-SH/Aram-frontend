@@ -58,11 +58,11 @@ export default function AllNotificationsComponent() {
 
   return (
     <>
-      <div className="w-full px-4 pb-6 pt-8">
+      <div style={{ direction: "rtl" }} className="w-full  px-4 pb-6 pt-8">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
           {language == "EN" ? "Notifications" : "الإشعارات"}
         </h1>
-        <div className="space-y-4 w-full h-screen">
+        <div className="space-y-4 w-full h-screen overflow-y-auto">
           {notifications.length > 0 ? (
             notifications.map((notification, index) => (
               <motion.div

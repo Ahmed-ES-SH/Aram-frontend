@@ -35,9 +35,17 @@ export default function OfferSlide({ toggleOpen, offer }: Props) {
           <div className="content">
             <div className="flex items-start gap-1 ">
               <h1 className="text-black  font-bold text-left text-xl max-md:text-md">
-                10% Off Sitewide + Free Shipping on $50+
+                {language == "EN" ? offer.title_en : offer.title_ar}
               </h1>
             </div>
+            <p
+              style={{ overflowWrap: "anywhere" }}
+              className="text-left text-[14px] mt-4"
+            >
+              {language == "EN"
+                ? offer.description_en.slice(0, 40) + "..."
+                : offer.description_ar.slice(0, 40) + "..."}
+            </p>
             <p className="text-white text-left flex items-center gap-2 mt-8">
               <FcOrganization className="size-5" />
               <span className=" font-bold">

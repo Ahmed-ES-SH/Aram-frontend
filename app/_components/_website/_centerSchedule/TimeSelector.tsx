@@ -74,12 +74,12 @@ export default function TimeSelector({
 
   return (
     <>
-      <h2 className="text-xl max-md:text-md w-fit mx-auto text-center my-4 pb-3 border-b border-main_orange">
+      <h2 className="text-xl max-md:text-md w-fit mx-auto text-center my-4 pb-3 border-b dark:text-white border-main_orange">
         {language == "EN"
           ? "Setting pending appointments"
           : "تحديد المواعيد المعلقة"}
       </h2>
-      <div className="relative overflow-y-auto overflow-x-hidden p-4 h-[68vh]">
+      <div className="relative overflow-y-auto overflow-x-hidden p-4 h-[65vh]">
         {timeSlots.map((time, index) => {
           const booked = isBooked(time);
           const isSelected = (selectedTimes || []).includes(time); // التحقق من null

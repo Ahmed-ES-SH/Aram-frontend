@@ -3,6 +3,7 @@ import React from "react";
 import { FcOrganization } from "react-icons/fc";
 import { FaArrowRight, FaTag } from "react-icons/fa";
 import Img from "../../Img";
+import { UseVariables } from "@/app/context/VariablesContext";
 
 interface Props {
   offer: any;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function OfferCard({ toggleOpen, offer, index }: Props) {
+  const { language } = UseVariables();
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { delay: index * 0.2 } },
@@ -35,20 +37,26 @@ export default function OfferCard({ toggleOpen, offer, index }: Props) {
       <div className="content  flex flex-col flex-grow p-4">
         {/* عنوان العرض */}
         <h2 className="text-lg font-bold text-gray-900 mb-2">
-          {offer.title_en}
+          {language == "EN" ? offer.title_en : offer.title_ar}
         </h2>
         <p className="text-gray-700 mb-4">
-          {offer.description_en.slice(0, 80) + "..."}
+          {language == "EN"
+            ? offer.description_en.slice(0, 80) + "..."
+            : offer.description_ar.slice(0, 80) + "..."}
         </p>
 
         {/* التفاصيل */}
         <div className="details flex flex-col gap-2">
           <div className="flex items-center text-sm text-gray-600">
-            <span className="font-bold mr-2">Offer Start:</span>
+            <span className="font-bold mr-2">
+              {language == "EN" ? "Offer Start:" : "بداية العرض :"}
+            </span>
             <span>{offer.start_date}</span>
           </div>
           <div className="flex items-center text-sm text-gray-600">
-            <span className="font-bold mr-2">Offer end:</span>
+            <span className="font-bold mr-2">
+              {language == "EN" ? "Offer end:" : "نهاية العرض :"}
+            </span>
             <span>{offer.end_date}</span>
           </div>
         </div>
@@ -77,7 +85,11 @@ export default function OfferCard({ toggleOpen, offer, index }: Props) {
         transition={{ duration: 0.3, delay: 0.2 }}
       >
         <Img
-          src={offer.organization.icon ? offer.organization.icon : "/public"}
+          src={
+            offer.organization && offer.organization.icon
+              ? offer.organization.icon
+              : "/public"
+          }
           className="w-8 h-8 rounded-full"
         />
       </motion.div>

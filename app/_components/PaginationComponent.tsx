@@ -19,7 +19,10 @@ export default function Pagination({
   };
 
   return (
-    <ol className="flex justify-center gap-1 text-xs font-medium pt-4 border-t border-gray-300 dark:border-gray-700 my-6">
+    <ol
+      style={{ direction: "ltr" }}
+      className="flex justify-center gap-1 text-xs font-medium pt-4 border-t border-gray-300 dark:border-gray-700 my-6"
+    >
       {/* Previous Button */}
       <li>
         <button

@@ -145,6 +145,11 @@ export default function Sidebar(): JSX.Element {
           to: "/dashboard/cards",
         },
         {
+          title: "البطاقات التابعة",
+          image: "/dashboard/credit-cards.png",
+          to: "/dashboard/affiliatecards",
+        },
+        {
           title: "أضف بطاقة جديدة",
           image: "/dashboard/addcard.png",
           to: "/dashboard/addcard",
@@ -165,6 +170,23 @@ export default function Sidebar(): JSX.Element {
           title: "أضف مركز جديدة",
           image: "/dashboard/add.png",
           to: "/dashboard/addorganization",
+        },
+      ],
+    },
+    {
+      title: "عروض وخصومات المراكز",
+      image: "/dashboard/offer.png",
+      to: "#",
+      minilinks: [
+        {
+          title: "جميع العروض",
+          image: "/dashboard/discount.png",
+          to: "/dashboard/couponsoffers",
+        },
+        {
+          title: "أضف عرض جديدة",
+          image: "/dashboard/add.png",
+          to: "/dashboard/addoffer",
         },
       ],
     },
@@ -240,6 +262,11 @@ export default function Sidebar(): JSX.Element {
       ],
     },
 
+    {
+      title: "طلبات سحب الرصيد",
+      image: "/dashboard/money.png",
+      to: "/dashboard/withdrawbalancerequestes",
+    },
     {
       title: "التقارير",
       image: "/dashboard/report.png",

@@ -7,7 +7,12 @@ import Link from "next/link";
 import { UseVariables } from "@/app/context/VariablesContext";
 import { Cardcontext } from "@/app/context/CartContext";
 
-const ProductCard = ({ card }: any) => {
+interface props {
+  direct: string;
+  card: any;
+}
+
+const ProductCard = ({ card, direct }: props) => {
   const { language }: any = UseVariables();
   const {
     cartitems,
@@ -18,6 +23,9 @@ const ProductCard = ({ card }: any) => {
   } = Cardcontext();
 
   const quantity = getitemquanity(card);
+
+  const formatTitle = (title: string) =>
+    title.toLowerCase().replace(/\s+/g, "-");
 
   // حساب نسبة الخصم
   const discountPercentage = card.price_before_discount
@@ -49,7 +57,12 @@ const ProductCard = ({ card }: any) => {
 
       {/* صورة الخلفية */}
       <div className="w-full h-full bg-gray-100 dark:bg-secend_dash">
-        <Link href={`/cards/${card.id}`} className="px-2">
+        <Link
+          href={`/${direct}/${card.id}?Card_title=${formatTitle(
+            card?.title_en
+          )}`}
+          className="px-2"
+        >
           <CardComponent
             bg_img={card.image ? card.image : "/cards/card_1.jpg"}
           />
@@ -59,7 +72,9 @@ const ProductCard = ({ card }: any) => {
       {/* محتوى البطاقة */}
       <div className="h-1/3 bg-white dark:bg-main_dash border-t dark:border-gray-600 p-4 pt-8">
         <Link
-          href={`/cards/${card.id}`}
+          href={`/${direct}/${card.id}?Card_title=${formatTitle(
+            card.title_en
+          )}`}
           className="text-sm font-bold text-gray-800 dark:text-secend_text group-hover:underline"
         >
           {language === "EN" ? card.title_en : card.title_ar}

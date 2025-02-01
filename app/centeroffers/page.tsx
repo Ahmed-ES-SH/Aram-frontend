@@ -1,9 +1,10 @@
 import React from "react";
+import CenteroffersComponent from "../_components/_website/_centeroffers/CenteroffersComponent";
 
 export default function Centeroffers() {
   return (
     <>
-      <div className="w-full"></div>
+      <CenteroffersComponent />
     </>
   );
 }

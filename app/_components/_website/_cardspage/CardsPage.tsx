@@ -120,7 +120,7 @@ export default function CardsPage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <ProductCard card={card} />
+                    <ProductCard direct="cards" card={card} />
                   </motion.li>
                 ))}
               </ul>

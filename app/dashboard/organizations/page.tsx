@@ -13,31 +13,45 @@ import {
 import Img from "@/app/_components/Img";
 import Loading from "@/app/_components/Loading";
 import SuccessPopup from "@/app/_components/_dashboard/SuccessPopup";
+import Pagination from "@/app/_components/PaginationComponent";
 
 export default function Main_Service_Section() {
   const { language }: any = UseVariables();
-  const [selectedCategory, setSelectedCategory] = useState<string | number>(
-    "All"
-  );
+  const [selectedCategory, setSelectedCategory] = useState<any>({
+    id: "All",
+    name: "All",
+  });
   const [showdeletepopup, setshowdeletepopup] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [categories, setCategories] = useState<any[]>([]); // نوع البيانات المسترجعة من API
-  const [organizations, setOrganizations] = useState<any[]>([]); // نوع البيانات المسترجعة من API
-  const [currentPage, setCurrentPage] = useState<number>(1); // الصفحة الحالية
-  const [currentId, setCurrentId] = useState<number>(0); // الصفحة الحالية
-  const [lastPage, setLastPage] = useState<number>(1); // العدد الإجمالي للصفحات
-  const [loading, setLoading] = useState<boolean>(false); // حالة التحميل
+  const [categories, setCategories] = useState<any[]>([]);
+  const [organizations, setOrganizations] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [filtercurrentPage, setfiltercurrentPage] = useState<number>(1);
+  const [currentId, setCurrentId] = useState<number>(0);
+  const [lastPage, setLastPage] = useState<number>(1);
+  const [filterlastPage, setfilterlastPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [filterorgs, setFilterOrgs] = useState([]);
+  const [selecteddata, setselecteddata] = useState("default");
 
-  // تحميل البيانات من الـ API مع Pagination
-  const fetchData = async (page: number) => {
+  const fetchData = async (categoryId: string | number, page: number) => {
     setLoading(true);
     try {
-      const response = await instance.get(
-        `/organizations?page=${page}&limit=8`
-      );
-      setOrganizations(response.data.data);
-      setCurrentPage(response.data.pagination.current_page);
-      setLastPage(response.data.pagination.last_page);
+      if (categoryId === "All") {
+        const response = await instance.get(`/organizations?page=${page}`);
+        setOrganizations(response.data.data);
+        setCurrentPage(response.data.pagination.current_page);
+        setLastPage(response.data.pagination.last_page);
+        setselecteddata("default");
+      } else {
+        const response = await instance.get(
+          `/organizations-by-service/${categoryId}?page=${page}`
+        );
+        setFilterOrgs(response.data.data);
+        setfiltercurrentPage(response.data.pagination.current_page);
+        setfilterlastPage(response.data.pagination.last_page);
+        setselecteddata("filterdata");
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -48,6 +62,14 @@ export default function Main_Service_Section() {
   const handlePageChange = (newPage: number) => {
     if (newPage > 0 && newPage <= lastPage) {
       setCurrentPage(newPage);
+      fetchData(selectedCategory.id, newPage);
+    }
+  };
+
+  const handlefilterpagechange = (newPage: number) => {
+    if (newPage > 0 && newPage <= filterlastPage) {
+      setfiltercurrentPage(newPage);
+      fetchData(selectedCategory.id, newPage);
     }
   };
 
@@ -62,10 +84,13 @@ export default function Main_Service_Section() {
     };
 
     fetchCategories();
-    fetchData(currentPage); // تحميل البيانات الخاصة بالخدمات للصفحة الحالية
-  }, [currentPage]);
+    fetchData(selectedCategory.id, currentPage); // جلب البيانات عند تحميل الصفحة لأول مرة
+  }, []);
 
-  // تحضير قائمة الفئات للتصفية باستخدام category_id
+  useEffect(() => {
+    fetchData(selectedCategory.id, currentPage);
+  }, [selectedCategory, currentPage]);
+
   const filterCategories = [
     { id: "All", name: "All" },
     ...categories.map((category) => ({
@@ -74,16 +99,12 @@ export default function Main_Service_Section() {
     })),
   ];
 
-  // تصفية الخدمات حسب الـ category_id المحدد
-  const filteredServices =
-    selectedCategory === "All"
-      ? organizations
-      : organizations.filter(
-          (service) => service.category_id === selectedCategory
-        );
-
   const handleCategoryChange = (categoryId: string | number) => {
-    setSelectedCategory(categoryId);
+    setSelectedCategory({
+      id: categoryId,
+      name: categoryId === "All" ? "All" : "",
+    });
+    setCurrentPage(1);
   };
 
   const handleDelete = async (id: number) => {
@@ -105,10 +126,13 @@ export default function Main_Service_Section() {
   const deletepopuptoggle = () => {
     setshowdeletepopup((prev) => !prev);
   };
+
   const showdeletepopuptoggle = (id: number) => {
     setshowdeletepopup(true);
     setCurrentId(id);
   };
+
+  const currentdata = selecteddata == "filterdata" ? filterorgs : organizations;
 
   if (loading) {
     return <Loading />;
@@ -121,7 +145,6 @@ export default function Main_Service_Section() {
           المراكز
         </h1>
         <div className="flex h-screen flex-col md:flex-row gap-6">
-          {/* الشريط الجانبي */}
           <aside className="w-full overflow-y-auto h-full md:w-1/4 bg-white dark:bg-secend_dash p-4 rounded-md shadow-lg">
             <h2 className="text-lg font-semibold dark:text-secend_text mb-4">
               تصفية حسب الفئة
@@ -132,7 +155,7 @@ export default function Main_Service_Section() {
                   <button
                     onClick={() => handleCategoryChange(category.id)}
                     className={`w-full text-left px-4 py-2 rounded-md text-sm font-medium ${
-                      selectedCategory === category.id
+                      selectedCategory.id === category.id
                         ? "bg-main_blue text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300"
                     }`}
@@ -144,119 +167,91 @@ export default function Main_Service_Section() {
             </ul>
           </aside>
 
-          {/* قائمة الخدمات */}
           <div className="w-full md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <AnimatePresence>
-              {filteredServices.map((card, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  className="w-full flex group overflow-hidden flex-col items-start h-[420px] border dark:border-gray-600 rounded-md shadow-md relative"
-                >
-                  <div
-                    style={{
-                      backgroundImage: `url(${
-                        card.image || "/services/service-02.jpg"
-                      })`,
-                    }}
-                    className={`w-full h-[60%] bg-cover`}
-                  ></div>
-                  <div className="content mt-8 px-4 flex flex-col gap-2 items-start">
-                    <h1 className="dark:text-secend_text font-semibold text-[18px]">
-                      {language === "EN" ? card.title_en : card.title_ar}
-                    </h1>
-                    <p className="dark:text-gray-500">
-                      {language === "EN"
-                        ? card.description_en.length > 40
-                          ? card.description_en.slice(0, 40) + "..."
-                          : card.description_en
-                        : card.description_ar.length > 40
-                        ? card.description_ar.slice(0, 40) + "..."
-                        : card.description_ar}
-                    </p>
-                  </div>
-                  <div
-                    className={`absolute overflow-hidden rounded-md shadow-sm bg-main_blue ${
-                      language === "EN" ? "right-3" : "left-3"
-                    } top-[60%] -translate-y-1/2 border dark:border-gray-700 flex items-center justify-center`}
+              {currentdata.length > 0 ? (
+                currentdata.map((card, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    className="w-full flex group overflow-hidden flex-col items-start h-[420px] border dark:border-gray-600 rounded-md shadow-md relative"
                   >
-                    <Img src={card.icon || "/logo.png"} className="w-[60px]" />
-                  </div>
-                  <div className="w-full h-0 group-hover:h-full duration-200 overflow-hidden absolute left-0 top-0 bg-black/50 flex items-center justify-center">
-                    <div className="flex items-center  gap-2">
-                      <Link
-                        href={`/dashboard/organizations/${card.id}`}
-                        className="flex items-center gap-2 text-white bg-sky-400 px-3 py-1 rounded-md shadow-sm"
-                      >
-                        <p>تعديل</p>
-                        <FaPen />
-                      </Link>
-                      <button
-                        onClick={() => showdeletepopuptoggle(card.id)}
-                        className="flex items-center gap-2 text-white bg-red-400 px-3 py-1 rounded-md shadow-sm"
-                      >
-                        <p>حذف</p>
-                        <FaTrash />
-                      </button>
+                    <div
+                      style={{
+                        backgroundImage: `url(${
+                          card.image || "/services/service-02.jpg"
+                        })`,
+                      }}
+                      className={`w-full h-[60%] bg-cover`}
+                    ></div>
+                    <div className="content mt-8 px-4 flex flex-col gap-2 items-start">
+                      <h1 className="dark:text-secend_text font-semibold text-[18px]">
+                        {language === "EN" ? card.title_en : card.title_ar}
+                      </h1>
+                      <p className="dark:text-gray-500">
+                        {language === "EN"
+                          ? card.description_en.length > 40
+                            ? card.description_en.slice(0, 40) + "..."
+                            : card.description_en
+                          : card.description_ar.length > 40
+                          ? card.description_ar.slice(0, 40) + "..."
+                          : card.description_ar}
+                      </p>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                    <div
+                      className={`absolute overflow-hidden rounded-md shadow-sm bg-main_blue ${
+                        language === "EN" ? "right-3" : "left-3"
+                      } top-[60%] -translate-y-1/2 border dark:border-gray-700 flex items-center justify-center`}
+                    >
+                      <Img
+                        src={card.icon || "/logo.png"}
+                        className="w-[60px]"
+                      />
+                    </div>
+                    <div className="w-full h-0 group-hover:h-full duration-200 overflow-hidden absolute left-0 top-0 bg-black/50 flex items-center justify-center">
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/dashboard/organizations/${card.id}`}
+                          className="flex items-center gap-2 text-white bg-sky-400 px-3 py-1 rounded-md shadow-sm"
+                        >
+                          <p>تعديل</p>
+                          <FaPen />
+                        </Link>
+                        <button
+                          onClick={() => showdeletepopuptoggle(card.id)}
+                          className="flex items-center gap-2 text-white bg-red-400 px-3 py-1 rounded-md shadow-sm"
+                        >
+                          <p>حذف</p>
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="w-full text-center text-lg text-gray-500">
+                  لا توجد منظمات تطابق الفلتر
+                </div>
+              )}
             </AnimatePresence>
           </div>
         </div>
-        {/* الـ Pagination */}
-        <div className="w-fit bg-main_orange ml-2 mt-4 px-2 py-1 border border-gray-300 rounded-md">
-          <ol className="flex justify-center gap-1 text-xs font-medium">
-            <li>
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage <= 1}
-                className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900"
-              >
-                <span className="sr-only">Prev Page</span>
-                <FaChevronCircleLeft
-                  className={
-                    currentPage > 1 ? "cursor-pointer" : "text-gray-400"
-                  }
-                />
-              </button>
-            </li>
 
-            {[...Array(lastPage)].map((_, index) => (
-              <li key={index}>
-                <button
-                  onClick={() => handlePageChange(index + 1)}
-                  className={`block size-8 rounded border text-center leading-8 ${
-                    index + 1 === currentPage
-                      ? "border-blue-600 bg-blue-600 text-white"
-                      : "border-gray-100 bg-white text-gray-900"
-                  }`}
-                >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-
-            <li>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage >= lastPage}
-                className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900"
-              >
-                <span className="sr-only">Next Page</span>
-                <FaChevronCircleRight
-                  className={
-                    currentPage < lastPage ? "cursor-pointer" : "text-gray-400"
-                  }
-                />
-              </button>
-            </li>
-          </ol>
-        </div>
+        <Pagination
+          currentPage={
+            selecteddata == "filterdata" ? filtercurrentPage : currentPage
+          }
+          totalPages={selecteddata == "filterdata" ? filterlastPage : lastPage}
+          onPageChange={
+            selecteddata == "filterdata"
+              ? handlefilterpagechange
+              : handlePageChange
+          }
+        />
       </section>
+
       {isPopupVisible && (
         <SuccessPopup
           message="تمت العملية بنجاح!"

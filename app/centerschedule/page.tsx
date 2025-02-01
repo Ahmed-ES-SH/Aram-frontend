@@ -2,13 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { instance } from "../Api/axios";
 import { useDataContext } from "../context/DataContext";
-import Navbar from "../_components/_website/Navbar";
-import Footer from "../_components/_website/Footer";
 import Calender from "../_components/_website/_centerSchedule/Calender";
 import { UseVariables } from "../context/VariablesContext";
-import TimeSlotSelector from "../_components/_website/_booking/TimeSlotSelector";
 import TimeSelector from "../_components/_website/_centerSchedule/TimeSelector";
 import SuccessPopup from "../_components/_dashboard/SuccessPopup";
+import { motion } from "framer-motion";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function CenterSchedule() {
   const { currentuser } = useDataContext();
@@ -62,12 +61,23 @@ export default function CenterSchedule() {
   };
 
   const handlePrevStep = () => {
-    if (step > 1) setStep(step - 1);
+    if (step > 1) {
+      setStep(step - 1);
+      setStepError({ ar: "", en: "" });
+    }
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
     try {
+      if (selectedTimes.length === 0) {
+        handleStepError("يرجى اختيار وقت.", "Please select a time.");
+        setshowsuccessPopup(false);
+        return;
+      }
       setLoading(true);
 
       // تحويل التاريخ إلى تنسيق مناسب
@@ -113,6 +123,12 @@ export default function CenterSchedule() {
       // التحقق من نجاح جميع الطلبات
       if (responses.every((response) => response.status === 201)) {
         setshowsuccessPopup(true);
+        await instance
+          .get(`/booked-appointments/${orgId}`)
+          .then((data) => setBookedAppointments(data.data.data));
+        setSelectedDay(null);
+        setSelectedTimes([]);
+        setStep(1);
       }
     } catch (error: any) {
       console.log(error);
@@ -124,15 +140,28 @@ export default function CenterSchedule() {
   const onclose = () => {
     setshowsuccessPopup((prev) => !prev);
   };
+
+  if (loading)
+    return (
+      <div className="min-h-[98vh] h-full w-full flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 2 }}
+        >
+          <AiOutlineLoading3Quarters className="size-36 max-xl:size-24 text-main_orange animate-pulse" />
+        </motion.div>
+      </div>
+    );
   return (
     <>
-      <div className="w-full p-4 min-h-screen relative bg-gradient-to-r from-orange-50 to-orange-100 dark:from-main_dash dark:to-secend_dash mt-20 pt-10">
+      <div className="w-full p-4 min-h-[95vh] relative bg-gradient-to-r from-orange-50 to-orange-100 dark:from-main_dash dark:to-secend_dash mt-20 pt-10">
         {step == 1 && (
           <Calender
             orgId={orgId}
             selectedDay={selectedDay}
             setSelectedDay={setSelectedDay}
             bookedAppointments={bookedAppointments}
+            stepError={stepError}
           />
         )}
         {step === 2 && (
@@ -145,17 +174,20 @@ export default function CenterSchedule() {
             bookedAppointments={bookedAppointments}
           />
         )}
-        <div className="flex items-center justify-between border-t border-main_orange w-[90%] mx-auto max-md:w-[97%] pt-8 my-4 ml-auto">
+        <p className="my-4 text-red-400 text-lg w-fit mx-auto pb-2 border-b border-red-400">
+          {stepError && language == "EN" ? stepError.en : stepError.ar}
+        </p>
+        <div className="flex max-md:flex-col-reverse max-md:gap-4   items-center justify-between border-t border-main_orange w-[90%] mx-auto max-md:w-[97%] pt-8 my-4 ml-auto">
           <button
             onClick={handlePrevStep}
-            className="min-w-[200px] bg-gray-400   py-4 rounded-md  text-white text-center shadow-md "
+            className="min-w-[200px] max-md:w-[90%] mx-auto bg-gray-400   py-4 rounded-md  text-white text-center shadow-md "
           >
             {language == "EN" ? "Back" : "عودة"}
           </button>
           <button
             onClick={step == 2 ? handleSubmit : handleNextStep}
             disabled={!selectedDay}
-            className="min-w-[200px] disabled:bg-gray-400  bg-main_orange  py-4 rounded-md  text-white text-center shadow-md "
+            className="min-w-[200px] max-md:w-[90%] mx-auto disabled:bg-gray-400  bg-main_orange  py-4 rounded-md  text-white text-center shadow-md "
           >
             {step == 2
               ? language == "EN"

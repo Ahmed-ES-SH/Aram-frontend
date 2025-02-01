@@ -36,8 +36,9 @@ export default function NotificationsComponent() {
         {notifications.length > 0 ? (
           notifications.map((notification: any) => (
             <motion.li
+              style={{ direction: "rtl" }}
               key={notification.id}
-              className={`p-3 rounded-lg shadow-sm hover:bg-gray-100  text-white transition ${
+              className={`p-3  rounded-lg shadow-sm hover:bg-gray-100  text-white transition ${
                 notification.is_read === 0
                   ? "bg-orange-100 border-l-4 border-orange-500 "
                   : "bg-gray-50 dark:bg-gray-300"

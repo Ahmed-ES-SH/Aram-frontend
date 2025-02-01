@@ -1,11 +1,6 @@
 "use client";
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { FaUserCircle } from "react-icons/fa";
-import { MdLogout } from "react-icons/md";
 import Img from "../Img";
-
-import DashboardSetting from "./DashboardSetting";
 import { UseVariables } from "@/app/context/VariablesContext";
 import UserButton from "../_website/_Auth/UserButtton";
 import Link from "next/link";
@@ -46,7 +41,6 @@ export default function Topbar() {
           </div>
         </div>
       </nav>
-      <DashboardSetting />
     </>
   );
 }

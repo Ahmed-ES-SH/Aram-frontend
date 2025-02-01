@@ -1,10 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import {
-  HiOutlineUserCircle,
-  HiOutlineLogout,
-  HiOutlineCog,
-} from "react-icons/hi";
+import { HiOutlineUserCircle, HiOutlineLogout } from "react-icons/hi";
 import Img from "../../Img";
 import { instance } from "@/app/Api/axios";
 import {
@@ -19,7 +15,7 @@ import { UseVariables } from "@/app/context/VariablesContext";
 import { AnimatePresence, motion } from "framer-motion";
 import { useDataContext } from "@/app/context/DataContext";
 import Loading from "../../Loading";
-import { CiBoxList } from "react-icons/ci";
+import { CiBoxList, CiCreditCard2 } from "react-icons/ci";
 import NotificationsComponent from "../_notifactions/NotifiticationsComponent";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { GrDashboard } from "react-icons/gr";
@@ -29,6 +25,7 @@ import {
   MdOutlineDesignServices,
 } from "react-icons/md";
 import { LuBadgeDollarSign } from "react-icons/lu";
+import { RxCardStackPlus } from "react-icons/rx";
 
 interface usertype {
   name: string;
@@ -142,27 +139,37 @@ export default function UserButton() {
     ...links,
     {
       href: `/myaffiliateservices?organizzation_name=${currentusername}&organization_Id=${id}`,
-      icon: <MdOutlineDesignServices />,
+      icon: <MdOutlineDesignServices className="size-5" />,
       label: { EN: "Center Services", AR: "خدمات المركز" },
     },
     {
       href: `/addaffiliateservice?organizzation_name=${currentusername}`,
-      icon: <MdOutlineAddToPhotos />,
+      icon: <MdOutlineAddToPhotos className="size-5" />,
       label: { EN: "Add new service", AR: "أضف خدمة جديدة" },
     },
     {
       href: `/centeroffers?organizzation_name=${currentusername}&organization_Id=${id}`,
-      icon: <MdLocalOffer />,
-      label: { EN: "Center offer", AR: "عروض المركز" },
+      icon: <MdLocalOffer className="size-5" />,
+      label: { EN: "Center offers", AR: "عروض المركز" },
+    },
+    {
+      href: `/centercards?organizzation_name=${currentusername}&organization_Id=${id}`,
+      icon: <CiCreditCard2 className="size-5" />,
+      label: { EN: "Center Cards", AR: "بطاقات المركز" },
+    },
+    {
+      href: `/addaffiliatecard?organizzation_name=${currentusername}&organization_Id=${id}`,
+      icon: <RxCardStackPlus className="size-5" />,
+      label: { EN: "Add New Card", AR: "أضف بطاقة جديدة" },
     },
     {
       href: `/centerschedule?organizzation_name=${currentusername}&organization_Id=${id}`,
-      icon: <FaRegCalendarAlt />,
+      icon: <FaRegCalendarAlt className="size-5" />,
       label: { EN: "Center Schedule", AR: "مواعيد المركز" },
     },
     {
       href: `/accountbalance?organizzation_name=${currentusername}&organization_Id=${id}`,
-      icon: <LuBadgeDollarSign />,
+      icon: <LuBadgeDollarSign className="size-5" />,
       label: { EN: "Account balance", AR: "رصيد الحساب" },
     },
   ];
@@ -219,6 +226,7 @@ export default function UserButton() {
           <AnimatePresence>
             {isOpen && (
               <motion.div
+                style={{ direction: language == "EN" ? "ltr" : "rtl" }}
                 className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white dark:bg-gray-600 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

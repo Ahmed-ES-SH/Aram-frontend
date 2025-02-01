@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { FaWhatsapp, FaArrowUp, FaChevronUp } from "react-icons/fa";
 import { instance } from "@/app/Api/axios";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import CheckCurrentUserPopup from "./_website/_Auth/CheckCurrentUserPopup";
 
 const ContactButton = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [currentUserCheck, setCurrentUserCheck] = useState(false);
   const [whatsappNumber, setWhatsappNumber] = useState(""); // حالة لتخزين رقم الواتساب
   const [type, settype] = useState(""); // حالة لتخزين رقم الواتساب
@@ -72,6 +73,12 @@ const ContactButton = () => {
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
+
+  const dashboard = pathname.split("/")[1];
+
+  if (dashboard == "dashboard") {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-4 left-4 flex flex-col items-center gap-2 z-[9999]">

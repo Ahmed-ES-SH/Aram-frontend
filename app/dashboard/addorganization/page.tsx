@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
   FaCheck,
@@ -20,6 +20,7 @@ import { useDataContext } from "@/app/context/DataContext";
 import { instance } from "@/app/Api/axios";
 import SuccessPopup from "@/app/_components/_dashboard/SuccessPopup";
 import dynamic from "next/dynamic";
+import Loading from "@/app/_components/Loading";
 
 const SelectLocation = dynamic(() => import("@/app/_components/MapFile"), {
   ssr: false, // تعطيل الرندر الجانبي (SSR) إذا كنت لا ترغب في أن يتم تحميله من الخادم
@@ -191,6 +192,8 @@ export default function Page() {
       prevFeatures.filter((_: any, i: any) => i !== index)
     );
   };
+
+  if (loading) return <Loading />;
 
   return (
     <motion.div

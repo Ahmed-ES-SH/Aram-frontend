@@ -7,8 +7,6 @@ import {
   FaCheckCircle,
   FaTimesCircle,
 } from "react-icons/fa";
-import Img from "../../Img";
-import ProductCard from "../ProductCard";
 import CardComponent from "../Cardcomponent";
 import { TbExclamationMark } from "react-icons/tb";
 import { SiAwssecretsmanager } from "react-icons/si";

@@ -3,11 +3,10 @@ import { instance } from "@/app/Api/axios";
 import React, { useState, useEffect } from "react";
 import Loading from "../../Loading";
 import SuccessPopup from "../SuccessPopup";
-import { FaChevronCircleRight, FaPen, FaTrash } from "react-icons/fa";
+import { FaPen, FaTrash } from "react-icons/fa";
 import Pagination from "../../PaginationComponent";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import Img from "../../Img";
 import { UseVariables } from "@/app/context/VariablesContext";
 import CardComponent from "../../_website/Cardcomponent";
 

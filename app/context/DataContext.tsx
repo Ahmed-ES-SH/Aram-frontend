@@ -14,6 +14,8 @@ interface DataContextType {
   currentuser: any;
   type: string;
   settype: any;
+  publishedOrgs: any;
+  setPublishedOrgs: any;
   activeCards: any;
   randomArticles: any;
   activeOrganizations: any;
@@ -62,6 +64,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [newNotification, setnewNotification] = useState<any>([]);
   const [notifications, setNotifications] = useState<any>([]);
   const [catgeories, setCategories] = useState<string[]>([]);
+  const [publishedOrgs, setPublishedOrgs] = useState<string[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
   const [allCategories, setAllCategories] = useState<any>([]);
   const [categoriesPage, setcategoriesPage] = useState(1);
@@ -92,6 +95,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     fetchData("/currentuser", setcurrentuser);
     fetchData("/currentuser", setcurrentuser);
     fetchData("/all-service-categories", setAllCategories);
+    fetchData("/organizations-by-rateing", setPublishedOrgs);
   }, []);
 
   useEffect(() => {
@@ -209,6 +213,8 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         currentuser,
         type,
         settype,
+        publishedOrgs,
+        setPublishedOrgs,
         notifications,
         setNotifications,
         makeAllasRead,

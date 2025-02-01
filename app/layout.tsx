@@ -5,6 +5,7 @@ import Cart from "./_components/_website/Cart";
 import ContactButton from "./_components/Whatsappbtn";
 import Navbar from "./_components/_website/Navbar";
 import Footer from "./_components/_website/Footer";
+import Head from "next/head";
 
 export const metadata: Metadata = {
   title: "شركة آرام الخليج المحدودة",
@@ -38,14 +39,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`tajawal-regular`}>
-        <head>
+        <Head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap"
             rel="stylesheet"
           />
-        </head>
+        </Head>
         <ClientLayout>
           <Navbar />
           <div className="pt-6 w-full h-full">{children}</div>
