@@ -24,7 +24,7 @@ interface catgeorytype {
   title_ar: string;
 }
 
-export default function page() {
+export default function Page() {
   const { language } = UseVariables();
   const { allCategories, currentuser } = useDataContext();
   const orgId = currentuser && currentuser.id;

@@ -46,7 +46,6 @@ export default function PaginatedTable({
       setCurrentPage(newPage);
     }
   };
-  console.log(refresh);
   useEffect(() => {
     const getdata = async (page: number) => {
       try {

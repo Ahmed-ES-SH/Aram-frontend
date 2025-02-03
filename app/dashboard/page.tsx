@@ -1,14 +1,14 @@
 import React from "react";
-import { Metadata } from "next";
-import dynamic from "next/dynamic";
 import FourCards from "../_components/_dashboard/_maindash/FourCards";
 import FirstCanvesSection from "../_components/_dashboard/_maindash/FirstCanvesSection";
-import SecendCanvesSection from "../_components/_dashboard/_maindash/SecendCanvesSection";
 import Head from "../_components/_dashboard/_maindash/Head";
 import BillsTable from "../_components/_dashboard/_maindash/BillsTable";
 import TobOrganizations from "../_components/_dashboard/_maindash/TobOrganizations";
 import BillsSummaryTable from "../_components/_dashboard/_maindash/BillsSummary";
 import MapComponent from "../_components/MapVariable";
+import PurchaseTable from "../_components/_dashboard/_maindash/PurchaseTable";
+import VisitsTable from "../_components/_dashboard/_maindash/VisitorsTable";
+import CardVisitsTable from "../_components/_dashboard/_maindash/CardVisitsTable";
 
 export default function page() {
   const location = {
@@ -26,6 +26,9 @@ export default function page() {
         <BillsTable />
         <TobOrganizations />
         <BillsSummaryTable />
+        <PurchaseTable />
+        <VisitsTable />
+        <CardVisitsTable />
         <div className="h-[50vh] w-full p-2 rounded-md">
           <MapComponent location={location} />
         </div>

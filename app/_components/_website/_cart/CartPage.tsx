@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { BsCartX } from "react-icons/bs";
 import { useDataContext } from "@/app/context/DataContext";
 import ForbiddenPage from "@/app/forbiddenpage/page";
+import { LuCheck, LuCircleX, LuLoader } from "react-icons/lu";
 
 export default function CartPage() {
   const { language } = UseVariables();
@@ -20,7 +21,7 @@ export default function CartPage() {
     Cardcontext();
   const { currentuser, type } = useDataContext();
   const router = useRouter();
-
+  const userId = currentuser && currentuser.id;
   const calculateTotal = () => {
     const subtotal = cartitems.reduce(
       (sum: number, item: any) => sum + item.price * item.quantity,
@@ -57,6 +58,11 @@ export default function CartPage() {
   ];
 
   const [cardsDetailes, setCardsDetailes] = useState<any>([]);
+  const [promoCode, setPromoCode] = useState("");
+  const [purchaseId, setpurchaseId] = useState("");
+  const [checkLoading, setCheckLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     setCardsDetailes((prevcards: any) => {
@@ -101,6 +107,7 @@ export default function CartPage() {
       formdata.append("account_type", type);
       formdata.append("notificationOption", "LNK");
       formdata.append("invoiceValue", total);
+      if (purchaseId) formdata.append("purchase_id", purchaseId);
       formdata.append("cardsDetailes", JSON.stringify(cardsDetailes));
       const response = await instance.post("/payment/initiate", formdata);
       router.push(response.data.Data.InvoiceURL);
@@ -109,11 +116,39 @@ export default function CartPage() {
     }
   };
 
+  console.log(purchaseId);
+
+  const checkPromoCode = async () => {
+    try {
+      setCheckLoading(true);
+      const data = {
+        promo_code: promoCode,
+        amount: total,
+        user_id: userId,
+      };
+      const response = await instance.post("/purchase", data);
+      if (response.status == 200) {
+        const data = response.data.data;
+        setpurchaseId(data.uniqId);
+        // إظهار علامة النجاح
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000); // إخفاء العلامة بعد ثانيتين
+      }
+    } catch (error: any) {
+      console.log(error);
+      // إظهار علامة الفشل
+      setError(true);
+      setTimeout(() => setError(false), 2000); // إخفاء العلامة بعد ثانيتين
+    } finally {
+      setCheckLoading(false);
+    }
+  };
+
   if (!currentuser) return <ForbiddenPage />;
 
   return (
     <>
-      <div className="flex items-start max-xl:flex-col gap-4 max-xl:gap-2 p-6 max-md:p-2 mt-16 bg-white dark:bg-secend_dash ">
+      <div className="flex  items-start max-xl:flex-col gap-4 max-xl:gap-2 p-6 max-md:p-2 mt-16 max-md:mt-20 bg-white dark:bg-secend_dash ">
         <div className="table-products  h-screen max-xl:h-fit  overflow-auto w-[60%] max-xl:w-full flex-grow">
           <table className="min-w-full border dark:border-gray-700 rounded-lg shadow-lg max-h-screen min-h-[52vh] overflow-x-auto bg-gray-100 dark:bg-main_dash text-sm  ">
             <thead className="ltr:text-left rtl:text-right border-b border-black  dark:border-gray-300">
@@ -226,31 +261,78 @@ export default function CartPage() {
             </tbody>
           </table>
           <div className="space-y-4 mt-2 w-[40%]  max-xl:w-full rounded-lg border border-gray-200 bg-gray-100 p-4 shadow-sm dark:border-gray-700 dark:bg-main_dash sm:p-6">
-            <form className="space-y-4">
+            <div className="space-y-4">
               <div>
                 <label
                   htmlFor="voucher"
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                   {language == "EN"
-                    ? "Do you have a voucher or gift card?"
-                    : "هل لديك قسيمة شراء أو بطاقة هدية؟"}
+                    ? "Do you have a promo Code?"
+                    : "هل لديك كود دعائى او كود خصم"}
                 </label>
                 <input
+                  name="promo_code"
                   type="text"
                   id="voucher"
                   className="block outline-none w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                   placeholder=""
-                  required
+                  value={promoCode}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPromoCode(e.target.value)
+                  }
                 />
               </div>
-              <button
-                type="submit"
-                className="flex w-full items-center justify-center rounded-lg bg-main_orange border border-transparent duration-200 hover:bg-transparent hover:text-black dark:hover:text-white hover:border-main_orange hover:scale-105 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                {language == "EN" ? "Apply Code" : "تطبيق الرمز"}
-              </button>
-            </form>
+              <div className="flex flex-col items-center gap-2">
+                <button
+                  onClick={checkPromoCode}
+                  disabled={checkLoading}
+                  className={`${
+                    checkLoading ? "bg-orange-500" : "bg-green-500"
+                  } text-white py-2 px-4 rounded-lg text-lg transition-all duration-300 hover:bg-green-600 disabled:bg-gray-300`}
+                >
+                  {checkLoading ? (
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 0.3, repeat: Infinity }}
+                      className="w-5 h-5 border-4 border-t-transparent border-black rounded-full"
+                    />
+                  ) : language === "EN" ? (
+                    "Apply Code"
+                  ) : (
+                    "تطبيق الرمز"
+                  )}
+                </button>
+
+                {/* علامة النجاح */}
+                {success && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="text-green-500 mt-2 text-sm"
+                  >
+                    {language === "EN"
+                      ? "Promo code applied successfully!"
+                      : "تم تطبيق الرمز الترويجي بنجاح!"}
+                  </motion.div>
+                )}
+
+                {/* علامة الفشل */}
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="text-red-500 mt-2 text-sm"
+                  >
+                    {language === "EN"
+                      ? "Invalid promo code!"
+                      : "الرمز الترويجي غير صالح!"}
+                  </motion.div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
         <div className="mx-auto h-[50vh]  max-xl:h-fit w-[40%] max-xl:w-full mt-6  flex-1 space-y-6 lg:mt-0 ">

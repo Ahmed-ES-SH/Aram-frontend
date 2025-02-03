@@ -26,6 +26,7 @@ import {
 } from "react-icons/md";
 import { LuBadgeDollarSign } from "react-icons/lu";
 import { RxCardStackPlus } from "react-icons/rx";
+import { BiSolidOffer } from "react-icons/bi";
 
 interface usertype {
   name: string;
@@ -133,6 +134,11 @@ export default function UserButton() {
       icon: <IoChatbubbleEllipsesOutline className="w-5 h-5" />,
       label: { EN: "Conversations", AR: "قائمة المحادثات" },
     },
+    {
+      href: `/accountbalance?organizzation_name=${currentusername}&organization_Id=${id}`,
+      icon: <LuBadgeDollarSign className="size-5" />,
+      label: { EN: "Account balance", AR: "رصيد الحساب" },
+    },
   ];
 
   const organizationLinks = [
@@ -158,19 +164,9 @@ export default function UserButton() {
       label: { EN: "Center Cards", AR: "بطاقات المركز" },
     },
     {
-      href: `/addaffiliatecard?organizzation_name=${currentusername}&organization_Id=${id}`,
-      icon: <RxCardStackPlus className="size-5" />,
-      label: { EN: "Add New Card", AR: "أضف بطاقة جديدة" },
-    },
-    {
       href: `/centerschedule?organizzation_name=${currentusername}&organization_Id=${id}`,
       icon: <FaRegCalendarAlt className="size-5" />,
       label: { EN: "Center Schedule", AR: "مواعيد المركز" },
-    },
-    {
-      href: `/accountbalance?organizzation_name=${currentusername}&organization_Id=${id}`,
-      icon: <LuBadgeDollarSign className="size-5" />,
-      label: { EN: "Account balance", AR: "رصيد الحساب" },
     },
   ];
 
@@ -248,6 +244,18 @@ export default function UserButton() {
                     </>
                   ))}
 
+                  {type == "User" && (
+                    <Link
+                      href={`/couponesaccount?account_type=${type}&account_name=${text}`}
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 duration-200"
+                      role="menuitem"
+                    >
+                      <BiSolidOffer className="w-5 h-5" />
+                      {language === "EN"
+                        ? "Account Coupones"
+                        : "كوبونات المستخدم"}
+                    </Link>
+                  )}
                   {role == "Admin" && (
                     <Link
                       href={`/dashboard?account_type=${type}&account_name=${text}`}

@@ -7,8 +7,10 @@ import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import SlideAd from "./SlideAd";
+import { useDataContext } from "@/app/context/DataContext";
 
 export default function SiderbarAds() {
+  const { randomOffers } = useDataContext();
   const [isOpen, setIsOpen] = useState(false);
 
   // تأخير ظهور الشريط الجانبي بعد 5 ثوانٍ
@@ -53,12 +55,12 @@ export default function SiderbarAds() {
                 slidesPerView={1}
                 className="h-screen"
               >
-                <SwiperSlide>
-                  <SlideAd />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <SlideAd />
-                </SwiperSlide>
+                {randomOffers &&
+                  randomOffers.map((offer: any, index: number) => (
+                    <SwiperSlide key={index}>
+                      <SlideAd offer={offer} />
+                    </SwiperSlide>
+                  ))}
               </Swiper>
             </motion.div>
           )}

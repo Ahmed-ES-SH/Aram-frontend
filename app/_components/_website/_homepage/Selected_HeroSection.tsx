@@ -5,9 +5,13 @@ import React, { useEffect, useState } from "react";
 import Loading from "../../Loading";
 import SliderSection from "./Hero_section";
 import HeroVideo from "./HeroVideo";
+import { useSearchParams } from "next/navigation";
 
 export default function Selected_HeroSection() {
   const { language }: { language: string } = UseVariables();
+  const searchParams = useSearchParams();
+  const promoCode: any = searchParams.get("currentCode");
+  const decodeCode = atob(promoCode);
   const [sliderstate, setsliderstate] = useState<boolean>(false);
   const [videostate, setvideostate] = useState<boolean>(false);
   const [loading, setloading] = useState<boolean>(true);
@@ -30,6 +34,22 @@ export default function Selected_HeroSection() {
 
     getData();
   }, []);
+
+  useEffect(() => {
+    const checkCode = async () => {
+      try {
+        const response = await instance.post(`/track-visit`, {
+          code: decodeCode,
+        });
+        if (response.status == 200) {
+          console.log("vistor tracor");
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    if (decodeCode) checkCode();
+  }, [decodeCode]);
 
   if (loading) return <Loading />;
 

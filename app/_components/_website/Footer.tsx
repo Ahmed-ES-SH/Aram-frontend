@@ -79,7 +79,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-100 dark:bg-main_dash">
+    <footer className="bg-gray-100 dark:bg-secend_dash">
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="lg:flex lg:items-start lg:gap-8">
           <div className="text-teal-600 max-md:w-fit max-md:mx-auto">
@@ -159,9 +159,9 @@ export default function Footer() {
                 >
                   <Img
                     src={item.imgsrc}
-                    className="w-[20px] z-[999] cursor-pointer"
+                    className="w-[20px] z-[2] cursor-pointer"
                   />
-                  <div className="group-hover:w-full left absolute left-0 top-0 bg-sky-400 w-0 duration-300 cursor-pointer h-[500px]"></div>
+                  <div className="group-hover:w-full left absolute left-0 top-0 z-[1] bg-sky-400 w-0 duration-300 cursor-pointer h-[500px]"></div>
                 </Link>
               ))}
             </div>

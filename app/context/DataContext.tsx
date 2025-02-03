@@ -40,6 +40,8 @@ interface DataContextType {
   setcategoriesPage: any;
   setlocationPage: any;
   lastlocationPage: any;
+  randomOffers: any;
+  setRandomOffers: any;
 }
 
 // Create the context with a default value
@@ -71,6 +73,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [locationPage, setlocationPage] = useState(1);
   const [lastcategoriesPage, setlastcategoriesPage] = useState(1);
   const [lastlocationPage, setlastlocationPage] = useState(1);
+  const [randomOffers, setRandomOffers] = useState([]);
   const id = currentuser && currentuser.id;
   useEffect(() => {
     const fetchData = async (api: string, set: any) => {
@@ -88,6 +91,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     };
     fetchData("/currentuser", setcurrentuser);
     fetchData("/card-types", setActiveCards);
+    fetchData("/random-offers", setRandomOffers);
     fetchData("/active-services", setActiveServices);
     fetchData("/active-organizations", setActiveOrganizations);
     fetchData("/active-articals", setActiveArticles);
@@ -209,6 +213,8 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         activeServices,
         activeOrganizations,
         activeArticles,
+        randomOffers,
+        setRandomOffers,
         randomArticles,
         currentuser,
         type,

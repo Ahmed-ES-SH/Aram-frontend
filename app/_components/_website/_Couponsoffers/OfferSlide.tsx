@@ -18,7 +18,7 @@ export default function OfferSlide({ toggleOpen, offer }: Props) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative group cursor-pointer w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden"
+      className="relative group cursor-pointer w-full mx-auto bg-white dark:bg-secend_dash rounded-xl shadow-lg overflow-hidden"
     >
       {/* صورة العرض */}
       <div className="relative w-full h-[40vh]">
@@ -34,7 +34,7 @@ export default function OfferSlide({ toggleOpen, offer }: Props) {
         >
           <div className="content">
             <div className="flex items-start gap-1 ">
-              <h1 className="text-black  font-bold text-left text-xl max-md:text-md">
+              <h1 className="text-black  font-bold  whitespace-nowrap text-left text-xl max-md:text-md">
                 {language == "EN" ? offer.title_en : offer.title_ar}
               </h1>
             </div>

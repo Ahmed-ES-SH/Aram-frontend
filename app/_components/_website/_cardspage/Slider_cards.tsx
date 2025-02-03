@@ -72,7 +72,6 @@ export default function Slider_part() {
           autoplay={{
             delay: 2500,
           }}
-          navigation
           spaceBetween={100}
           slidesPerView={3}
           breakpoints={{

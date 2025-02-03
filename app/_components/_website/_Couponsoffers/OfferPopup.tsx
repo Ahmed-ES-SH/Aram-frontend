@@ -36,7 +36,7 @@ export default function OfferPopup({
       exit={{ opacity: 0 }}
     >
       <motion.div
-        className="relative w-full max-md:w-[95%] max-w-lg rounded-2xl py-12 bg-white shadow-lg"
+        className="relative w-full max-md:w-[95%] max-w-lg rounded-2xl py-12 bg-white dark:bg-secend_dash shadow-lg"
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0.8 }}
@@ -45,7 +45,7 @@ export default function OfferPopup({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-gray-600 hover:text-gray-900"
+          className="absolute right-4 top-4 text-gray-600 dark:text-white hover:text-gray-900"
         >
           <AiOutlineClose size={24} />
         </button>
@@ -70,16 +70,18 @@ export default function OfferPopup({
 
           {/* Offer Details */}
           <div className="mt-4">
-            <h2 className="text-2xl font-bold text-gray-800">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-secend_text">
               {offer.title_en}
             </h2>
-            <p className="text-sm text-gray-600 mt-2">{offer.description_en}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-200 mt-2">
+              {offer.description_en}
+            </p>
           </div>
 
           {/* Discount Value */}
-          <div className="mt-4 flex items-center gap-3 bg-gray-100 p-3 rounded-lg shadow-sm">
+          <div className="mt-4 flex items-center gap-3 bg-gray-100 dark:bg-main_dash p-3 rounded-lg shadow-sm">
             <FaTag className="text-yellow-500 text-xl" />
-            <span className="text-lg font-semibold text-gray-800">
+            <span className="text-lg font-semibold text-gray-800 dark:text-gray-300">
               {language == "EN" ? "Discount:" : "الخصم:"}
             </span>
             <span className="text-xl font-bold text-green-500">
@@ -88,18 +90,18 @@ export default function OfferPopup({
           </div>
 
           {/* Validity Dates */}
-          <div className="mt-2 text-sm text-gray-700 bg-gray-100 p-3 rounded-lg shadow-sm">
+          <div className="mt-2 text-sm text-gray-700 dark:text-secend_text bg-gray-100 dark:bg-main_dash p-3 rounded-lg shadow-sm">
             <p className="flex items-center gap-2">
               <FaCalendarAlt className="text-sky-500" />
               {language == "EN" ? "Valid from:" : "بداية التفعيل :"}
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-gray-800 dark:text-white">
                 {offer.start_date}
               </span>
             </p>
             <p className="flex items-center gap-2 mt-1">
               <FaCalendarAlt className="text-red-500" />
               {language == "EN" ? "Valid until:" : "نهاية التفعيل :"}
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-gray-800 dark:text-white">
                 {offer.end_date}
               </span>
             </p>
@@ -107,7 +109,7 @@ export default function OfferPopup({
 
           {/* Code Box */}
           <div className="mt-6">
-            <div className="flex items-center justify-between rounded-lg border border-gray-300 p-4">
+            <div className="flex items-center justify-between rounded-lg border border-gray-300 dark:border-gray-700 p-4">
               <span className="font-mono text-lg text-gray-800">
                 {offer.code}
               </span>

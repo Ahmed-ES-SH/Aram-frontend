@@ -17,6 +17,7 @@ import {
   MdClose,
   MdNotes,
   MdPerson,
+  MdSignalCellularNodata,
   MdTimer,
 } from "react-icons/md";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -86,6 +87,9 @@ export default function InvoiceTable() {
         }
       } catch (error: any) {
         console.log(error);
+        if (error.response.status == 404) {
+          setBills([]);
+        }
       } finally {
         setLoading(false);
       }
@@ -136,126 +140,147 @@ export default function InvoiceTable() {
             </tr>
           </thead>
           <tbody>
-            {bills.length > 0 ? (
-              bills.map((invoice: any, index: number) => (
-                <tr key={index} className="odd:bg-orange-50">
-                  <td
-                    className={`py-2 px-4 border-b ${
-                      invoice.type_operation == "deposit"
-                        ? "text-green-500"
-                        : "text-red-400"
-                    } `}
-                  >{`${invoice.type_operation != "deposit" ? "-" : ""} $ ${
-                    invoice.amount
-                  }`}</td>
-                  <td className="py-2 px-4  border-b ">
-                    <p
-                      className={`px-2 py-1 w-[120px]  rounded-md shadow-sm text-center text-white ${
+            {!loading ? (
+              bills.length > 0 ? (
+                bills.map((invoice: any, index: number) => (
+                  <tr key={index} className="odd:bg-orange-50">
+                    <td
+                      className={`py-2 px-4 border-b ${
                         invoice.type_operation == "deposit"
-                          ? "bg-green-300"
-                          : "bg-red-300"
-                      }`}
-                    >
-                      {language == "EN"
-                        ? invoice.type_operation
-                        : invoice.type_operation == "deposit"
-                        ? "إيداع"
-                        : "سحب"}
-                    </p>
-                  </td>
-                  <td className="py-2 px-4  border-b ">
-                    <div
-                      className={`${
-                        invoice.status == "waiting"
-                          ? "bg-yellow-300"
+                          ? "text-green-500"
+                          : "text-red-400"
+                      } `}
+                    >{`${invoice.type_operation != "deposit" ? "-" : ""} $ ${
+                      invoice.amount
+                    }`}</td>
+                    <td className="py-2 px-4  border-b ">
+                      <p
+                        className={`px-2 py-1 w-[120px]  rounded-md shadow-sm text-center text-white ${
+                          invoice.type_operation == "deposit"
+                            ? "bg-green-300"
+                            : "bg-red-300"
+                        }`}
+                      >
+                        {language == "EN"
+                          ? invoice.type_operation
+                          : invoice.type_operation == "deposit"
+                          ? "إيداع"
+                          : "سحب"}
+                      </p>
+                    </td>
+                    <td className="py-2 px-4  border-b ">
+                      <div
+                        className={`${
+                          invoice.status == "waiting"
+                            ? "bg-yellow-300"
+                            : invoice.status == "done"
+                            ? "bg-green-300"
+                            : "bg-red-300"
+                        } text-white text-center rounded-md shadow-sm px-2 py-1 w-[120px] `}
+                      >
+                        {language == "EN"
+                          ? invoice.status
+                          : invoice.status == "waiting"
+                          ? "معلق"
                           : invoice.status == "done"
-                          ? "bg-green-300"
-                          : "bg-red-300"
-                      } text-white text-center rounded-md shadow-sm px-2 py-1 w-[120px] `}
-                    >
+                          ? "تم"
+                          : "مرفوضة"}
+                      </div>
+                    </td>
+                    <td className="py-2 px-4 border-b ">
                       {language == "EN"
-                        ? invoice.status
-                        : invoice.status == "waiting"
-                        ? "معلق"
-                        : invoice.status == "done"
-                        ? "تم"
-                        : "مرفوضة"}
+                        ? invoice.bell_type
+                        : invoice.bell_type == "confirm_booked"
+                        ? "تأكيد حجز"
+                        : invoice.bell_type == "withdraw_balance"
+                        ? "عملية سحب"
+                        : "غير معرف"}
+                    </td>
+                    {invoice.type_operation == "withdraw" ? (
+                      <td className="py-2 px-4 border-b  ">
+                        <div className="flex items-center gap-3 px-3 group">
+                          <Img
+                            src={
+                              currentuser
+                                ? currentuser.icon
+                                  ? currentuser.icon
+                                  : currentuser.image
+                                : "/public"
+                            }
+                            className="w-7 h-7 border rounded-full"
+                          />
+                          <p className="group-hover:underline whitespace-nowrap duration-150 cursor-pointer">
+                            {currentuser.title_en
+                              ? currentuser.title_en
+                              : currentuser.name}
+                          </p>
+                        </div>
+                      </td>
+                    ) : (
+                      <td className="py-2 px-4 border-b  ">
+                        <div className="flex items-center gap-3 px-3 group">
+                          <Img
+                            src={
+                              invoice.Bill_payer.icon
+                                ? invoice.Bill_payer.icon
+                                : invoice.Bill_payer.image
+                            }
+                            className="w-7 h-7 border rounded-full"
+                          />
+                          <p className="group-hover:underline whitespace-nowrap duration-150 cursor-pointer">
+                            {invoice.Bill_payer.title_ar
+                              ? invoice.Bill_payer.title_ar
+                              : invoice.Bill_payer.name}
+                          </p>
+                        </div>
+                      </td>
+                    )}
+                    {invoice.type_operation != "withdraw" ? (
+                      <td className="py-2 px-4 border-b ">
+                        <motion.button
+                          onClick={() => openPopup(invoice)}
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="bg-blue-500 w-[180px] text-white  mx-auto px-4 py-2 whitespace-nowrap rounded flex items-center justify-center"
+                        >
+                          <FaInfoCircle className="mr-2" />
+                          {language == "EN"
+                            ? "Bill Deatiles"
+                            : "تفاصيل الفاتورة"}
+                        </motion.button>
+                      </td>
+                    ) : (
+                      <td>
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          className="bg-red-300 w-[180px] text-white  mx-auto px-4 py-2 whitespace-nowrap rounded flex items-center justify-center"
+                        >
+                          <FaInfoCircle className="mr-2" />
+                          {language == "EN"
+                            ? "withdraw operation"
+                            : "عملية سحب"}
+                        </motion.button>
+                      </td>
+                    )}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={12}>
+                    <div className="h-[70vh] flex items-center justify-center">
+                      <div className="flex items-center gap-3 flex-col">
+                        <MdSignalCellularNodata className="size-36 text-gray-400" />
+                        <p>
+                          {language == "EN"
+                            ? "No Data Available For This Account yet ."
+                            : "لا توجد معاملات مالية تخص هذا الحساب حتى الأن ."}
+                        </p>
+                      </div>
                     </div>
                   </td>
-                  <td className="py-2 px-4 border-b ">
-                    {language == "EN"
-                      ? invoice.bell_type
-                      : invoice.bell_type == "confirm_booked"
-                      ? "تأكيد حجز"
-                      : invoice.bell_type == "withdraw_balance"
-                      ? "عملية سحب"
-                      : "غير معرف"}
-                  </td>
-                  {invoice.type_operation == "withdraw" ? (
-                    <td className="py-2 px-4 border-b  ">
-                      <div className="flex items-center gap-3 px-3 group">
-                        <Img
-                          src={
-                            currentuser
-                              ? currentuser.icon
-                                ? currentuser.icon
-                                : currentuser.image
-                              : "/public"
-                          }
-                          className="w-7 h-7 border rounded-full"
-                        />
-                        <p className="group-hover:underline whitespace-nowrap duration-150 cursor-pointer">
-                          {currentuser.title_en
-                            ? currentuser.title_en
-                            : currentuser.name}
-                        </p>
-                      </div>
-                    </td>
-                  ) : (
-                    <td className="py-2 px-4 border-b  ">
-                      <div className="flex items-center gap-3 px-3 group">
-                        <Img
-                          src={
-                            invoice.Bill_payer.icon
-                              ? invoice.Bill_payer.icon
-                              : invoice.Bill_payer.image
-                          }
-                          className="w-7 h-7 border rounded-full"
-                        />
-                        <p className="group-hover:underline whitespace-nowrap duration-150 cursor-pointer">
-                          {invoice.Bill_payer.title_ar
-                            ? invoice.Bill_payer.title_ar
-                            : invoice.Bill_payer.name}
-                        </p>
-                      </div>
-                    </td>
-                  )}
-                  {invoice.type_operation != "withdraw" ? (
-                    <td className="py-2 px-4 border-b ">
-                      <motion.button
-                        onClick={() => openPopup(invoice)}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="bg-blue-500 w-[180px] text-white  mx-auto px-4 py-2 whitespace-nowrap rounded flex items-center justify-center"
-                      >
-                        <FaInfoCircle className="mr-2" />
-                        {language == "EN" ? "Bill Deatiles" : "تفاصيل الفاتورة"}
-                      </motion.button>
-                    </td>
-                  ) : (
-                    <td>
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="bg-red-300 w-[180px] text-white  mx-auto px-4 py-2 whitespace-nowrap rounded flex items-center justify-center"
-                      >
-                        <FaInfoCircle className="mr-2" />
-                        {language == "EN" ? "withdraw operation" : "عملية سحب"}
-                      </motion.button>
-                    </td>
-                  )}
                 </tr>
-              ))
+              )
             ) : (
               <tr>
                 <td colSpan={12} className="dark:bg-main_dash">

@@ -150,6 +150,11 @@ export default function Sidebar(): JSX.Element {
           to: "/dashboard/affiliatecards",
         },
         {
+          title: "أضف بطاقة تابعة",
+          image: "/dashboard/affiliate-card.png",
+          to: "/dashboard/addaffiliatecard",
+        },
+        {
           title: "أضف بطاقة جديدة",
           image: "/dashboard/addcard.png",
           to: "/dashboard/addcard",
@@ -187,6 +192,28 @@ export default function Sidebar(): JSX.Element {
           title: "أضف عرض جديدة",
           image: "/dashboard/add.png",
           to: "/dashboard/addoffer",
+        },
+      ],
+    },
+    {
+      title: "كوبونات المستخدمين ",
+      image: "/dashboard/voucher.png",
+      to: "#",
+      minilinks: [
+        {
+          title: "جميع الكوبونات",
+          image: "/dashboard/gift-card.png",
+          to: "/dashboard/coupons",
+        },
+        {
+          title: "إرسال كوبون",
+          image: "/dashboard/paper-plane.png",
+          to: "/dashboard/sendcoupon",
+        },
+        {
+          title: "أضف كوبون جديدة",
+          image: "/dashboard/add.png",
+          to: "/dashboard/addcoupon",
         },
       ],
     },
@@ -340,7 +367,7 @@ export default function Sidebar(): JSX.Element {
       <AnimatePresence>
         {showsidebar && (
           <motion.div
-            className="bg-gray-800  dark:bg-secend_dash  shadow-sky-400 text-white h-screen hidden-scrollbar  z-[999999] fixed top-20 left-0 overflow-x-hidden overflow-y-auto shadow-lg flex flex-col"
+            className="bg-gray-800  dark:bg-secend_dash  shadow-sky-400 text-white h-screen hidden-scrollbar   z-[999999] fixed top-0 left-0  overflow-y-auto shadow-lg flex flex-col"
             initial={{ x: -300, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -300, opacity: 0 }}
@@ -387,7 +414,7 @@ export default function Sidebar(): JSX.Element {
                           href={link.to}
                           className="flex items-center gap-4 px-4 py-2 hover:bg-gray-700 cursor-pointer"
                         >
-                          <Img src={link.image} className="w-4" />
+                          <Img src={link.image} className="w-5" />
                           <span className="text-sm whitespace-nowrap">
                             {link.title}
                           </span>

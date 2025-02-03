@@ -7,22 +7,18 @@ import {
   FaFacebook,
   FaCheckCircle,
   FaMoneyBill,
+  FaTimes,
 } from "react-icons/fa";
-import { organizations } from "@/app/constants/website";
-import Img from "../../Img";
 import CardComponent from "../Cardcomponent";
 import { UseVariables } from "@/app/context/VariablesContext";
-import Separator from "../Separator";
 import Slider_cards from "./Slider_cards";
-import Link from "next/link";
-import Footer from "../Footer";
 import Loading from "../../Loading";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { instance } from "@/app/Api/axios";
 import { Cardcontext } from "@/app/context/CartContext";
-import { useDataContext } from "@/app/context/DataContext";
 import RandomOrganizationsSidebar from "../RandomOrganizationSidebar";
+import { useDataContext } from "@/app/context/DataContext";
 
 interface cardType {
   id: number;
@@ -45,8 +41,13 @@ interface props {
 export default function CardPage({ api }: props) {
   const { language }: any = UseVariables();
   const { cartitems, addToCart }: any = Cardcontext();
+  const { currentuser } = useDataContext();
+  const userCode = btoa(currentuser && currentuser.user_code);
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
+  const promoCode: any = searchParams.get("currentCode");
+  const decodeCode = atob(promoCode);
   const id = params.cardId;
   const [card, setCard] = useState<cardType>({
     id: 0,
@@ -62,6 +63,7 @@ export default function CardPage({ api }: props) {
     quantity: 0,
   });
   const [loading, setloading] = useState<boolean>(true);
+
   const cardDetails = {
     title: language === "EN" ? card.title_en : card.title_ar,
     description: language === "EN" ? card.description_en : card.description_ar,
@@ -107,6 +109,38 @@ export default function CardPage({ api }: props) {
     getdata();
   }, []);
 
+  const [showPopup, setShowPopup] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
+  const [copied, setCopied] = useState<{ code: boolean; link: boolean }>({
+    code: false,
+    link: false,
+  });
+
+  // دالة فتح الـ Popup وتحديد الرابط الحالي
+  const handleShareClick = () => {
+    const currentUrl = window.location.href; // الحصول على الرابط الحالي
+    setShareUrl(currentUrl);
+    setShowPopup(true);
+  };
+
+  const handleCopy = async (text: string, type: "code" | "link") => {
+    if (!text) {
+      console.error("⚠️ لا يوجد نص للنسخ!");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied((prev) => ({ ...prev, [type]: true }));
+
+      setTimeout(() => {
+        setCopied((prev) => ({ ...prev, [type]: false }));
+      }, 1500);
+    } catch (error) {
+      console.error("❌ فشل النسخ:", error);
+    }
+  };
+
   const handlesubmit = (card: cardType) => {
     if (cartitems.find((carditem: any) => carditem.id === card.id)) {
       alert("This item is already in the cart!"); // إشعار
@@ -117,16 +151,32 @@ export default function CardPage({ api }: props) {
     }
   };
 
+  useEffect(() => {
+    const checkCode = async () => {
+      try {
+        const response = await instance.post(`/track-card-visit`, {
+          code: decodeCode,
+        });
+        if (response.status == 200) {
+          console.log("vistor tracor");
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    if (decodeCode) checkCode();
+  }, [decodeCode]);
+
   if (loading) return <Loading />;
 
   return (
     <>
       <div className="bg-gray-50 dark:bg-main_dash mt-20 ">
-        <div className="w-full  mx-auto p-3 max-md:p-2 flex items-start justify-between max-lg:flex-col  gap-3 mt-10">
+        <div className="w-full  mx-auto p-3 max-md:p-2 flex items-start justify-between max-xl:flex-col  gap-3 mt-10">
           {/* البطاقة الرئيسية */}
           <motion.div
             style={{ direction: language == "EN" ? "ltr" : "rtl" }}
-            className=" bg-white dark:bg-secend_dash rounded-lg shadow-lg p-6 w-[75%] max-lg:w-full"
+            className=" bg-white dark:bg-secend_dash rounded-lg shadow-lg p-6 w-[75%] max-xl:w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -178,34 +228,34 @@ export default function CardPage({ api }: props) {
 
             {/* مشاركة البطاقة */}
             <div className="flex justify-center gap-6 mt-8">
-              <motion.a
-                href="#"
+              <motion.button
                 className="p-2 text-white bg-blue-600 rounded-full hover:bg-blue-700"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
+                onClick={handleShareClick}
               >
                 <FaFacebook />
-              </motion.a>
-              <motion.a
-                href="#"
+              </motion.button>
+              <motion.button
                 className="p-2 text-white bg-blue-400 rounded-full hover:bg-blue-500"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
+                onClick={handleShareClick}
               >
                 <FaTwitter />
-              </motion.a>
-              <motion.a
-                href="#"
+              </motion.button>
+              <motion.button
                 className="p-2 text-white bg-blue-800 rounded-full hover:bg-blue-900"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
+                onClick={handleShareClick}
               >
                 <FaLinkedin />
-              </motion.a>
+              </motion.button>
             </div>
             <div className="button w-full mx-auto mt-6">
               <div
-                className="w-[30%] max-lg:w-1/2 max-md:w-[90%]  mx-auto cursor-pointer h-[40px] flex items-center gap-4 duration-200 justify-center rounded-md shadow-md my-2 bg-main_orange text-white border border-transparent hover:border-main_orange hover:bg-white hover:text-black"
+                className="w-[30%] max-xl:w-1/2 max-md:w-[90%]  mx-auto cursor-pointer h-[40px] flex items-center gap-4 duration-200 justify-center rounded-md shadow-md my-2 bg-main_orange text-white border border-transparent hover:border-main_orange hover:bg-white hover:text-black"
                 onClick={() => handlesubmit(card)}
               >
                 <FaMoneyBill className="size-4 " />
@@ -218,6 +268,40 @@ export default function CardPage({ api }: props) {
           <RandomOrganizationsSidebar length={5} />
         </div>
       </div>
+      {showPopup && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center z-[999] items-center">
+          <div className="bg-white relative p-6 rounded-lg shadow-lg w-fit max-md:w-[98%] max-xl:w-[90%] text-center">
+            <button
+              className="absolute top-2 right-2 text-red-500"
+              onClick={() => setShowPopup(false)}
+            >
+              <FaTimes size={20} />
+            </button>
+            <h3 className="text-lg font-bold mb-3">مشاركة الرابط</h3>
+            <p
+              style={{ overflowWrap: "anywhere" }}
+              className="break-words text-gray-600 mb-3"
+            >
+              {`${shareUrl}${!promoCode ? `&currentCode=${userCode}` : ""}`}
+            </p>
+
+            {/* زر النسخ مع تأكيد النجاح */}
+            <button
+              className="bg-main_orange text-white px-4 py-2 rounded-lg mt-3 relative"
+              onClick={() =>
+                handleCopy(
+                  `${shareUrl}${
+                    !promoCode ? `&currentCode=${userCode}` : ""
+                  }` || "",
+                  "code"
+                )
+              }
+            >
+              {copied.code ? "✅ تم النسخ!" : "📋 نسخ الرابط"}
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
