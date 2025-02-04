@@ -7,7 +7,7 @@ import Pagination from "@/app/_components/PaginationComponent";
 import { instance } from "@/app/Api/axios";
 import React, { useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);

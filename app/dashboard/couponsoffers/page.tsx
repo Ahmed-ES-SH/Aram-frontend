@@ -10,7 +10,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { LuSearch } from "react-icons/lu";
 import { MdSignalCellularNodata } from "react-icons/md";
 
-export default function page() {
+export default function Page() {
   const [offers, setOffers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchCurrentPage, setSearchCurrentPage] = useState(1);

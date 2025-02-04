@@ -1,3 +1,5 @@
+"use client";
+import { Suspense } from "react";
 import BlogSlider from "./_components/_website/_homepage/Blog_slider";
 import Cards_section from "./_components/_website/_homepage/Cards_section";
 import Contactus_section from "./_components/_website/_homepage/Contactus_Section";
@@ -7,11 +9,18 @@ import Selected_HeroSection from "./_components/_website/_homepage/Selected_Hero
 import Services_section from "./_components/_website/_homepage/Services_section";
 import StatisticsSection from "./_components/_website/_homepage/StatisticsSection";
 import SiderbarAds from "./_components/_website/_sidebarAds/SiderbarAds";
+import Loading from "./_components/Loading";
+
+function SearchBarFallback() {
+  return <Loading />;
+}
 
 export default function Home() {
   return (
     <>
-      <Selected_HeroSection />
+      <Suspense fallback={<SearchBarFallback />}>
+        <Selected_HeroSection />
+      </Suspense>
       <PromoSection />
       <Cards_section />
       <Services_section />
