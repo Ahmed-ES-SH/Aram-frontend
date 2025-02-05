@@ -6,10 +6,10 @@ const cookie = Cookie();
 
 const token = cookie.get("aram_token");
 
-export const main_api = "http://127.0.0.1:8000/api";
+export const main_api = "https://datafromapi.aramgulfunited.com/api";
 
 export const instance = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
+  baseURL: "https://datafromapi.aramgulfunited.com/api",
   headers: {
     Authorization: `Bearer ${token}`,
   },

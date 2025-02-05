@@ -69,11 +69,9 @@ export default function OffersCategoriesSlider() {
             <SwiperSlide key={index}>
               <Link
                 className="block w-full"
-                href={`/couponsoffers/${formatTitle(
+                href={`/couponsoffers/${category.id}?=category=${
                   category.title_en
-                )}?=category=${category.title_en}&categoryId=${btoa(
-                  category.id.toString()
-                )}`}
+                }&categoryId=${btoa(category.id.toString())}`}
               >
                 <OfferCategorySlide category={category} />
               </Link>

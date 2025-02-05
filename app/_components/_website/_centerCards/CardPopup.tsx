@@ -399,24 +399,6 @@ const CardPopup = ({
 
             {/* الصورة */}
           </div>
-
-          <div className="mt-6 flex justify-between w-[90%] mx-auto max-md:w-[98%] gap-4">
-            {isEditing ? (
-              <button
-                onClick={handleSave}
-                className="flex items-center justify-center text-center w-1/2 max-md:w-[90%] mx-auto gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
-              >
-                <FaCheck /> {language == "EN" ? "Save" : "حفظ التعديلات"}
-              </button>
-            ) : (
-              <button
-                onClick={() => setIsEditing(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-green-500 justify-center  w-1/2 max-md:w-[90%] mx-auto text-white rounded-lg hover:bg-green-600 transition duration-200"
-              >
-                <FaEdit /> {language == "EN" ? "Edit    " : "تعديل البطاقة"}
-              </button>
-            )}
-          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>

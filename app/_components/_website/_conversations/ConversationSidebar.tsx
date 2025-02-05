@@ -106,7 +106,7 @@ export default function ConversationSidebar() {
                       {otherParty?.icon ? (
                         <Img
                           src={
-                            otherParty.icon
+                            otherParty && otherParty.icon
                               ? otherParty.icon
                               : "/avatars/avatar_male.png"
                           }
@@ -115,7 +115,7 @@ export default function ConversationSidebar() {
                       ) : (
                         <Img
                           src={
-                            otherParty.image
+                            otherParty && otherParty.image
                               ? otherParty.image
                               : "/avatars/avatar_male.jpg"
                           }

@@ -177,9 +177,9 @@ export default function CenteroffersComponent() {
         {/* Main Content for Services */}
         <div className="max-lg:w-full relative flex-1  flex-grow w-3/4">
           <Link
-            href={`/addnewoffer?organization_title=${formatTitle(
-              organizationData?.title_en
-            )}`}
+            href={`/addnewoffer?organization_title=${
+              organizationData && formatTitle(organizationData?.title_en)
+            }`}
             className=" text-white bg-sky-400 hover:bg-white hover:scale-110 hover:text-black hover:border-sky-400 border border-transparent duration-200 px-4 py-2 rounded-md shadow-md absolute max-md:relative  max-md:ml-auto max-md:mb-4 top-2 right-2 flex items-center  justify-center max-md:w-[90%] max-md:mx-auto  gap-4  "
           >
             <CiSquarePlus className="size-6" />
