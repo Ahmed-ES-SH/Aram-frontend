@@ -44,7 +44,7 @@ const Popup: React.FC<PopupProps> = ({ card, onClose }) => {
         exit={{ opacity: 0 }}
       >
         <motion.div
-          className="bg-gradient-to-br mt-10 from-purple-600 to-blue-500 rounded-lg shadow-2xl p-6 w-1/2 max-md:w-[95%] relative overflow-hidden"
+          className="bg-gradient-to-br mt-20 from-purple-600 to-blue-500 rounded-lg shadow-2xl p-6 w-1/2 max-md:w-[95%] max-md:h-[80vh] h-fit overflow-y-auto relative overflow-hidden"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.8, opacity: 0 }}

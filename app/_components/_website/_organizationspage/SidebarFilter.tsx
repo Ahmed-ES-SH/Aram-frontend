@@ -42,16 +42,8 @@ export default function SidebarFilters({
   } = useDataContext();
   const path_name = usePathname();
 
+  // تعيين علامة التبويب النشطة إلى "departments" بشكل افتراضي
   const [activeTab, setActiveTab] = useState<string>("departments");
-
-  // تحديث علامة التبويب النشطة عند تحميل المكون بناءً على الفلتر/الموقع
-  useEffect(() => {
-    if (selectedFilter?.title_en !== "All") {
-      setActiveTab("departments");
-    } else if (selectedLocation?.address !== "All") {
-      setActiveTab("locations");
-    }
-  }, [selectedFilter, selectedLocation]);
 
   const handlePageChange = async (newPage: any) => {
     try {
@@ -98,7 +90,7 @@ export default function SidebarFilters({
             <button
               onClick={() => {
                 setActiveTab("departments");
-                setactiveTab("departments");
+                setactiveTab("departments"); // تعيين علامة التبويب النشطة
               }}
               className={`w-1/2 pb-2 text-center font-medium ${
                 activeTab === "departments"
@@ -112,7 +104,7 @@ export default function SidebarFilters({
               <button
                 onClick={() => {
                   setActiveTab("locations");
-                  setactiveTab("locations");
+                  setactiveTab("locations"); // تعيين علامة التبويب النشطة
                 }}
                 className={`w-1/2 pb-2 text-center font-medium ${
                   activeTab === "locations"

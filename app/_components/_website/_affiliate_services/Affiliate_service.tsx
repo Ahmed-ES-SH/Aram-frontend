@@ -253,6 +253,7 @@ export default function Affiliate_service({ serviceId }: props) {
         <CheckCurrentUserPopup
           isOpen={CheckCurrentUserPopup}
           onClose={CheckToggle}
+          language={language}
         />
       )}
     </>

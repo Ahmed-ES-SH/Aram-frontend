@@ -497,9 +497,9 @@ export default function AddAffiliateCard() {
       </label>
       <div
         style={{ direction: "rtl" }}
-        className="inputsearch mb-5 mt-2 flex items-center gap-2 relative w-[50%] max-lg:w-3/4 max-md:w-[97%] mx-auto"
+        className="inputsearch  mb-5 mt-2 flex items-center gap-2 relative w-[50%] max-lg:w-3/4 max-md:w-[97%] mx-auto"
       >
-        <div className="flex items-center w-full gap-2">
+        <div className="flex items-center w-full gap-2 max-md:flex-col ">
           <div className="relative bg-white rounded-md shadow-md h-[40px] flex items-center justify-center w-full">
             <LuSearch
               className={`${"right-2"} top-1/2 text-secend_text size-5`}

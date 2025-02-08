@@ -9,12 +9,10 @@ import SidebarFilters from "./SidebarFilter";
 import { instance } from "@/app/Api/axios";
 import Loading from "../../Loading";
 import Pagination from "../../PaginationComponent";
-import Footer from "../Footer";
 import { useDataContext } from "@/app/context/DataContext";
 import { MdOutlineSignalCellularNodata } from "react-icons/md";
 import { LuSearch, LuSlidersHorizontal } from "react-icons/lu";
 import RandomArticlesSidebar from "../_blogpage/RandomArticlesSidebar";
-import Slider_cards from "../_cardspage/Slider_cards";
 
 interface Organization {
   id: number;
@@ -128,11 +126,11 @@ export default function Organizations() {
         );
       } else {
         setFilteredData([]);
-        setSelectCurrentData("DefaultData"); // العودة إلى البيانات الأصلية
+        setSelectCurrentData("OriginalData"); // العودة إلى البيانات الأصلية
       }
     } else {
       setFilteredData([]);
-      setSelectCurrentData("DefaultData"); // العودة إلى البيانات الأصلية
+      setSelectCurrentData("OriginalData"); // العودة إلى البيانات الأصلية
     }
   }, [selectedFilter, selectedLocation, filteredCurrentPage]);
 
@@ -213,6 +211,7 @@ export default function Organizations() {
   useEffect(() => {
     if (contentSearch.length === 0) {
       setSearchResults([]);
+      setSelectCurrentData("OriginalData");
     }
   }, [contentSearch]);
 
@@ -248,9 +247,9 @@ export default function Organizations() {
         </div>
         <div
           style={{ direction: language == "EN" ? "ltr" : "rtl" }}
-          className="inputsearch mb-5 mt-2 flex items-center gap-2 relative w-[50%] max-lg:w-3/4 max-md:w-[97%] mx-auto"
+          className="inputsearch  mb-5 mt-2 flex items-center gap-2 relative w-[50%] max-lg:w-3/4 max-md:w-[97%] mx-auto"
         >
-          <div className="flex items-center w-full gap-2">
+          <div className="flex items-center w-full gap-2 max-md:flex-col ">
             <div className="relative bg-white rounded-md shadow-md h-[40px] flex items-center justify-center w-full">
               <LuSearch
                 className={`${

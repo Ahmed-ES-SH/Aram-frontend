@@ -8,8 +8,6 @@ import { instance } from "@/app/Api/axios";
 import Pagination from "../../PaginationComponent";
 import Img from "../../Img";
 import Loading from "../../Loading";
-import Navbar from "../Navbar";
-import Footer from "../Footer";
 import RandomArticlesSidebar from "../_blogpage/RandomArticlesSidebar";
 import { LuSearch, LuSlidersHorizontal } from "react-icons/lu";
 import SidebarFilters from "../_organizationspage/SidebarFilter";
@@ -38,7 +36,7 @@ export default function Main_Service_Section() {
   const [filteredServices, setFilteredServices] = useState<serviceType[]>([]);
   const [loading, setLoading] = useState(true);
   const [contentSearch, setContentSearch] = useState("");
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState("departments");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [currentFilterPage, setCurrentFilterPage] = useState(1);
   const [lastFilterPage, setLastFilterPage] = useState(1);
@@ -102,45 +100,11 @@ export default function Main_Service_Section() {
 
   // جلب البيانات المفلترة بناءً على العنوان مع تأخير
   useEffect(() => {
-    const delayData = setTimeout(() => {
-      const fetchServicesBySearch = async (text: string, page: number) => {
-        try {
-          setIsSearching(true); // بدء البحث
-          setLoading(true);
-          const response = await instance.get(
-            `/get-services-by-search/${encodeURIComponent(text)}?page=${page}`
-          );
-          if (response.status === 200) {
-            const data = response.data.data;
-            const pagination = response.data.pagination;
-            setSearchResults(data);
-            setCurrentFilterPage(pagination.current_page);
-            setLastFilterPage(pagination.last_page);
-            setIsSearchMode(true);
-            console.log("Search Results Data:", data); // تحقق من البيانات
-          } else {
-            setSearchResults([]);
-          }
-        } catch (error: any) {
-          console.error("Error fetching search results:", error);
-          setSearchResults([]);
-        } finally {
-          setLoading(false);
-          setIsSearching(false); // انتهاء البحث
-        }
-      };
-
-      if (contentSearch.trim() === "") {
-        // إذا كان مربع البحث فارغًا، قم بعرض جميع البيانات الأصلية
-        setSearchResults([]); // إعادة تعيين نتائج البحث إلى مصفوفة فارغة
-        setIsSearchMode(false); // الخروج من وضع البحث
-      } else {
-        // إذا كان هناك نص في مربع البحث، قم بجلب البيانات بناءً على البحث
-        fetchServicesBySearch(contentSearch, currentFilterPage);
-      }
-    }, 800); // تأخير 800 مللي ثانية
-
-    return () => clearTimeout(delayData); // تنظيف الـ timeout عند تغيير المدخل
+    if (contentSearch.trim() === "") {
+      // إذا كان مربع البحث فارغًا، قم بعرض جميع البيانات الأصلية
+      setSearchResults([]); // إعادة تعيين نتائج البحث إلى مصفوفة فارغة
+      setIsSearchMode(false); // الخروج من وضع البحث
+    }
   }, [contentSearch, currentFilterPage]);
 
   const handlePageChange = async (newPage: number) => {
@@ -184,6 +148,33 @@ export default function Main_Service_Section() {
     : isDefaultMode
     ? services
     : filteredServices;
+
+  const fetchServicesBySearch = async (text: string, page: number) => {
+    try {
+      setIsSearching(true); // بدء البحث
+      setLoading(true);
+      const response = await instance.get(
+        `/get-services-by-search/${encodeURIComponent(text)}?page=${page}`
+      );
+      if (response.status === 200) {
+        const data = response.data.data;
+        const pagination = response.data.pagination;
+        setSearchResults(data);
+        setCurrentFilterPage(pagination.current_page);
+        setLastFilterPage(pagination.last_page);
+        setIsSearchMode(true);
+        console.log("Search Results Data:", data); // تحقق من البيانات
+      } else {
+        setSearchResults([]);
+      }
+    } catch (error: any) {
+      console.error("Error fetching search results:", error);
+      setSearchResults([]);
+    } finally {
+      setLoading(false);
+      setIsSearching(false); // انتهاء البحث
+    }
+  };
 
   useEffect(() => {
     setIsDefaultMode(selectedFilter.title_en === "All");
@@ -230,35 +221,51 @@ export default function Main_Service_Section() {
 
         <div
           style={{ direction: language == "EN" ? "ltr" : "rtl" }}
-          className="inputsearch mb-5 mt-2 flex items-center gap-2 relative w-[50%] max-lg:w-3/4 max-md:w-[97%] mx-auto"
+          className="inputsearch  mb-5 mt-2 flex items-center gap-2 relative w-[50%] max-lg:w-3/4 max-md:w-[97%] mx-auto"
         >
-          <div className="relative bg-white rounded-md shadow-md h-[40px] flex items-center justify-center w-full">
-            <LuSearch
-              className={`${
-                language == "EN" ? "left-2" : "right-2"
-              } top-1/2 text-secend_text size-5`}
-            />
-            <input
-              type="text"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setContentSearch(e.target.value)
-              }
-              name="titlesearch"
-              value={contentSearch}
-              placeholder={
-                language == "EN"
-                  ? "Find the service here..."
-                  : "إبحث عن الخدمة هنا  ..."
-              }
-              className="w-[90%] bg-transparent h-full pr-9 px-4 py-2 outline-none placeholder-shown:px-4 placeholder-shown:py-2 placeholder-shown:pr-9 placeholder-shown:text-[18px]"
-            />
+          <div className="flex items-center w-full gap-2 max-md:flex-col ">
+            <div className="relative bg-white rounded-md shadow-md h-[40px] flex items-center justify-center w-full">
+              <LuSearch
+                className={`${
+                  language == "EN" ? "left-2" : "right-2"
+                } top-1/2 text-secend_text size-5`}
+              />
+              <input
+                type="text"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setContentSearch(e.target.value)
+                }
+                name="titlesearch"
+                value={contentSearch}
+                placeholder={
+                  language == "EN"
+                    ? "Find the service here..."
+                    : "إبحث عن الخدمة هنا  ..."
+                }
+                className="w-[90%] bg-transparent h-full pr-9 px-4 py-2 outline-none placeholder-shown:px-4 placeholder-shown:py-2 placeholder-shown:pr-9 placeholder-shown:text-[18px]"
+              />
 
-            <LuSlidersHorizontal
-              onClick={() => setIsFilterOpen((prev) => !prev)}
-              className={`${
-                language == "EN" ? "right-2" : "left-2"
-              } top-1/2 text-main_orange cursor-pointer size-6 hover:scale-125 duration-150`}
-            />
+              <LuSlidersHorizontal
+                onClick={() => setIsFilterOpen((prev) => !prev)}
+                className={`${
+                  language == "EN" ? "right-2" : "left-2"
+                } top-1/2 text-main_orange cursor-pointer size-6 hover:scale-125 duration-150`}
+              />
+            </div>
+            {
+              <button
+                onClick={() =>
+                  fetchServicesBySearch(contentSearch, currentFilterPage)
+                }
+                className={`px-6 py-2 hover:text-white text-cenetr rounded-md shadow-md border border-main_orange hover:bg-orange-400 duration-200 ${
+                  contentSearch.length > 0
+                    ? "opacity-100 block"
+                    : "opacity-0 cursor-auto hidden"
+                }`}
+              >
+                {language == "EN" ? "Search" : "بحث"}
+              </button>
+            }
           </div>
         </div>
         <div className="flex items-start max-xl:flex-col-reverse gap-2 w-full p-2">

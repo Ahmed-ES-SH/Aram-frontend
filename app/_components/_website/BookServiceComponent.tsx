@@ -158,6 +158,7 @@ export default function BookServiceComponent({ categoryId }: props) {
                 <CheckCurrentUserPopup
                   isOpen={CheckCurrentUserPopup}
                   onClose={CheckToggle}
+                  language={language}
                 />
               )}
             </>

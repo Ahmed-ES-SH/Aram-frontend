@@ -66,7 +66,7 @@ export default function OrganizationSlider() {
   return (
     <div className="w-full my-3 p-2">
       <Separator
-        bg_dark="dark:bg-secend_dash"
+        bg_dark="dark:bg-main_dash"
         text={language == "EN" ? "Aram Organizations" : "منظمات آرام"}
       />
       <Swiper

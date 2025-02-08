@@ -49,9 +49,9 @@ export default function PaginatedTable({
   useEffect(() => {
     const getdata = async (page: number) => {
       try {
+        setemptydata(false);
         setloading(true);
         const res = await instance.get(api, { params: { page } });
-        console.log(res.data); // التحقق من البيانات
         setdata(res.data.data);
         setCurrentPage(res.data.pagination.current_page);
         setLastPage(res.data.pagination.last_page);
@@ -65,7 +65,7 @@ export default function PaginatedTable({
       }
     };
     getdata(currentPage);
-  }, [currentPage]);
+  }, [currentPage, api]);
 
   async function hadledelete(apidelete: any, id: any) {
     try {
@@ -202,8 +202,9 @@ export default function PaginatedTable({
                               alt="logo"
                               className="w-[60px] h-[60px] rounded-full"
                             />
-                          ) : key == "amount" ? (
-                            <p>{` ${item["amount"]} $`}</p>
+                          ) : key == "amount" ||
+                            key == "purchases_sum_amount" ? (
+                            <p>{`$ ${item[key]} `}</p>
                           ) : key == "bell_type" ? (
                             <p>
                               {item["bell_type"] == "cards_bell" ? (

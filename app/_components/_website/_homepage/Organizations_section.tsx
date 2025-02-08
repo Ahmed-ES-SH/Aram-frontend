@@ -28,7 +28,6 @@ export default function Organizations_section() {
           autoplay={{
             delay: 2500,
           }}
-          navigation
           pagination={{ clickable: true }}
           spaceBetween={0}
           slidesPerView={3}

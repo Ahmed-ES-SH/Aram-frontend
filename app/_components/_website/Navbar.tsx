@@ -197,32 +197,19 @@ export default function Navbar() {
                       if (link.title_en === "Services") {
                         setIsHovered(true);
                       }
-                      if (link.title_en === "Cards") {
-                        setCardIsHovered(true);
-                      }
                     }}
                     onMouseLeave={() => {
                       if (link.title_en === "Services") {
                         setIsHovered(false);
                       }
-                      if (link.title_en === "Cards") {
-                        setCardIsHovered(false);
-                      }
                     }}
                   >
                     <Link
                       className="text-gray-500 flex items-center gap-2 dark:text-secend_text dark:hover:text-main_orange transition hover:text-main_orange duration-200"
-                      href={
-                        link.to == "/services" || link.to == "/cards"
-                          ? "#"
-                          : link.to
-                      }
+                      href={link.to == "/services" ? "#" : link.to}
                     >
                       <p>{language == "EN" ? link.title_en : link.title_ar}</p>
                       {link.title_en == "Services" && (
-                        <FaChevronDown className="text-[10px]" />
-                      )}
-                      {link.title_en == "Cards" && (
                         <FaChevronDown className="text-[10px]" />
                       )}
                     </Link>
@@ -252,36 +239,6 @@ export default function Navbar() {
                                 {language == "EN"
                                   ? "Affiliate Aram Services"
                                   : "خدمات التابعة لآرام"}
-                              </Link>
-                            </ul>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    )}
-                    {link.title_en == "Cards" && (
-                      <AnimatePresence>
-                        {isCardHovered && (
-                          <motion.div
-                            className="submenu w-fit h-fit py-2 px-2 rounded-md bg-white shadow-md absolute -bottom-20 left-0"
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <ul className="flex flex-col items-start gap-3">
-                              <Link
-                                href={"/cards"}
-                                className="text-gray-500 whitespace-nowrap cursor-pointer flex items-center gap-2 dark:text-secend_text dark:hover:text-main_orange transition hover:text-main_orange duration-200"
-                              >
-                                {language == "EN" ? "Cards" : "البطاقات"}
-                              </Link>
-                              <Link
-                                href={"/affiliatecards"}
-                                className="text-gray-500 whitespace-nowrap cursor-pointer flex items-center gap-2 dark:text-secend_text dark:hover:text-main_orange transition hover:text-main_orange duration-200"
-                              >
-                                {language == "EN"
-                                  ? "Affiliate Cards"
-                                  : "البطاقات التابعة"}
                               </Link>
                             </ul>
                           </motion.div>

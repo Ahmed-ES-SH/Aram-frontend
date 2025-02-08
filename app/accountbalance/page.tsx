@@ -97,7 +97,7 @@ const BalancePage = () => {
               <h3 className="text-lg font-semibold whitespace-nowrap">
                 {currentTexts.pendingBalance}
               </h3>
-              <p className="text-2xl font-bold">${balacne.pending_balance}</p>
+              <p className="text-2xl font-bold">${balacne?.pending_balance}</p>
             </motion.div>
 
             {/* Total Balance */}
@@ -107,9 +107,9 @@ const BalancePage = () => {
             >
               <FaWallet className="text-3xl mb-2" />
               <h3 className="text-lg font-semibold whitespace-nowrap">
-                {currentTexts.totalBalance}
+                {currentTexts?.totalBalance}
               </h3>
-              <p className="text-4xl font-bold">${balacne.total_balance}</p>
+              <p className="text-4xl font-bold">${balacne?.total_balance}</p>
             </motion.div>
 
             {/* Withdrawable Balance */}
@@ -119,9 +119,11 @@ const BalancePage = () => {
             >
               <FaHandHoldingUsd className="text-2xl mb-2" />
               <h3 className="text-lg font-semibold whitespace-nowrap">
-                {currentTexts.withdrawableBalance}
+                {currentTexts?.withdrawableBalance}
               </h3>
-              <p className="text-2xl font-bold">${balacne.available_balance}</p>
+              <p className="text-2xl font-bold">
+                ${balacne?.available_balance}
+              </p>
             </motion.div>
           </motion.div>
           <div className="mt-4 flex items-center border  rounded-t-md shadow-md">
@@ -133,7 +135,7 @@ const BalancePage = () => {
                   : "bg-gray-100 text-black"
               } whitespace-nowrap   border-r  `}
             >
-              {currentTexts.AccountTransactions}
+              {currentTexts?.AccountTransactions}
             </button>
             <button
               onClick={() => setCurrentButton("WithdrawBalance")}
@@ -143,7 +145,7 @@ const BalancePage = () => {
                   : "bg-gray-100 text-black"
               }  `}
             >
-              {currentTexts.WithdrawBalance}
+              {currentTexts?.WithdrawBalance}
             </button>
           </div>
           <div className="h-[70vh] relative border overflow-y-auto p-2 bg-white roudned-md shadow-md">

@@ -1,10 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { MdErrorOutline } from "react-icons/md";
-import { UseVariables } from "@/app/context/VariablesContext";
 
-const CheckCurrentUserPopup = ({ isOpen = true, onClose }: any) => {
-  const language = "EN";
+interface props {
+  isOpen: any;
+  onClose: () => void;
+  language: string;
+}
+
+const CheckCurrentUserPopup = ({ isOpen = true, onClose, language }: props) => {
   const translations: any = {
     EN: {
       title: "User Not Registered",

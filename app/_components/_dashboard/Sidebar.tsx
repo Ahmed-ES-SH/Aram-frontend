@@ -140,19 +140,19 @@ export default function Sidebar(): JSX.Element {
       to: "#",
       minilinks: [
         {
+          title: "أقسام البطاقات",
+          image: "/dashboard/genre.png",
+          to: "/dashboard/cardcategories",
+        },
+        {
+          title: "أضف قسم جديد ",
+          image: "/dashboard/add.png",
+          to: "/dashboard/addcardcategory",
+        },
+        {
           title: "جميع البطاقات",
           image: "/dashboard/cards.png",
           to: "/dashboard/cards",
-        },
-        {
-          title: "البطاقات التابعة",
-          image: "/dashboard/credit-cards.png",
-          to: "/dashboard/affiliatecards",
-        },
-        {
-          title: "أضف بطاقة تابعة",
-          image: "/dashboard/affiliate-card.png",
-          to: "/dashboard/addaffiliatecard",
         },
         {
           title: "أضف بطاقة جديدة",

@@ -59,12 +59,12 @@ export default function StatsPopup({ onClose }: Props) {
   const t = translations[language] || translations.ar;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center z-[50] bg-black bg-opacity-50">
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
-        className="bg-white dark:bg-secend_dash rounded-2xl p-6 w-1/2 shadow-lg text-center"
+        className="bg-white dark:bg-secend_dash rounded-2xl p-6 w-1/2 max-md:w-[95%] max-lg:w-[90%] max-xl:w-[70%] max-md:mt-20 shadow-lg text-center"
       >
         <h2 className="text-lg font-bold mb-4 dark:text-white">{t.title}</h2>
         {loading ? (
@@ -77,7 +77,7 @@ export default function StatsPopup({ onClose }: Props) {
             </motion.div>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1  gap-4">
             <div className="w-full flex flex-col items-center bg-gray-100 dark:bg-main_dash dark:text-white p-4 rounded-xl">
               <FaEye className="text-blue-500 text-3xl" />
               <p className="text-xl font-semibold mt-2">{visits}</p>

@@ -43,7 +43,7 @@ export default function Pagination({
               onClick={() => handlePageClick(page)}
               className={`block w-8 h-8 rounded border text-center leading-8 font-medium transition
               ${
-                page === currentPage
+                page == currentPage
                   ? "bg-main_orange text-white border-orange-400"
                   : "bg-white text-gray-900 border-gray-100 hover:bg-gray-200"
               }`}

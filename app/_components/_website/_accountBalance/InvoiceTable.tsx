@@ -5,14 +5,11 @@ import { UseVariables } from "@/app/context/VariablesContext";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaInfoCircle } from "react-icons/fa";
-import { FaCalendarAlt, FaClock, FaTimes, FaStickyNote } from "react-icons/fa";
-import { IoIosTime } from "react-icons/io";
 import Img from "../../Img";
 import { format } from "date-fns";
 import { ar, enUS } from "date-fns/locale";
 import {
   MdAccessTime,
-  MdBusiness,
   MdCalendarToday,
   MdClose,
   MdNotes,
@@ -201,11 +198,9 @@ export default function InvoiceTable() {
                         <div className="flex items-center gap-3 px-3 group">
                           <Img
                             src={
-                              currentuser
+                              currentuser && currentuser.icon
                                 ? currentuser.icon
-                                  ? currentuser.icon
-                                  : currentuser.image
-                                : "/public"
+                                : currentuser.image || "/public"
                             }
                             className="w-7 h-7 border rounded-full"
                           />
@@ -223,7 +218,7 @@ export default function InvoiceTable() {
                             src={
                               invoice.Bill_payer.icon
                                 ? invoice.Bill_payer.icon
-                                : invoice.Bill_payer.image
+                                : invoice.Bill_payer.image || "/public"
                             }
                             className="w-7 h-7 border rounded-full"
                           />

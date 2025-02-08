@@ -4,7 +4,7 @@ import Img from "@/app/_components/Img";
 import Loading from "@/app/_components/Loading";
 import { instance } from "@/app/Api/axios";
 import { motion } from "framer-motion";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaStarHalfStroke } from "react-icons/fa6";
 
 interface cardType {
@@ -39,6 +39,8 @@ export default function Page() {
   const [loading, setloading] = useState<boolean>(false);
   const [image, setimage] = useState<any>(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<any>(0);
+  const [categories, setCategories] = useState([]);
 
   const handleEdit = (
     field: keyof cardType,
@@ -65,8 +67,10 @@ export default function Page() {
       formdata.append("description_ar", card?.description_ar);
       formdata.append("features_ar", JSON.stringify(card?.features_ar));
       formdata.append("features_en", JSON.stringify(card?.features_en));
+      formdata.append("price_before_discount", card?.price_before_discount);
       formdata.append("price", card?.price);
       formdata.append("duration", card?.duration);
+      formdata.append("category_id", selectedCategory);
       if (image) formdata.append("image", image);
       const response = await instance.post("/add-card-type", formdata);
       if (response.status == 200) {
@@ -91,6 +95,25 @@ export default function Page() {
     } finally {
       setloading(false);
     }
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await instance.get(`/all-card-type-categories`);
+        if (response.status == 200) {
+          const data = response.data.data;
+          setCategories(data);
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
+
+  const handleCategoryCahnge = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e.target.value);
   };
 
   if (loading) return <Loading />;
@@ -300,6 +323,24 @@ export default function Page() {
                     <Img src={"/dashboard/add.png"} className="w-12" />
                   </div>
                 )}
+              </div>
+
+              <div className="w-full my-4">
+                <label className="block text-gray-700 dark:text-secend_text font-medium mb-2">
+                  حدد القسم الخاص بالبطاقة
+                </label>
+                <select
+                  className="w-full px-2 py-4 border shadow-md rounded-md outline-none"
+                  onChange={handleCategoryCahnge}
+                >
+                  {categories &&
+                    categories.length > 0 &&
+                    categories.map((cat: any, index) => (
+                      <option value={cat.id} key={index}>
+                        {`${cat.title_en} / ${cat.title_ar} `}
+                      </option>
+                    ))}
+                </select>
               </div>
 
               <div className="mt-6 flex justify-end">

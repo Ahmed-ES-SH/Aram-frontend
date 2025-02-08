@@ -147,6 +147,7 @@ export default function OrganiztionCard({ organization }: any) {
         <CheckCurrentUserPopup
           isOpen={CheckCurrentUserPopup}
           onClose={CheckToggle}
+          language={language}
         />
       )}
     </>

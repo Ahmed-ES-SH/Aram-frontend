@@ -4,6 +4,7 @@ import { FaWhatsapp, FaArrowUp, FaChevronUp } from "react-icons/fa";
 import { instance } from "@/app/Api/axios";
 import { usePathname, useRouter } from "next/navigation";
 import CheckCurrentUserPopup from "./_website/_Auth/CheckCurrentUserPopup";
+import Img from "./Img";
 
 const ContactButton = () => {
   const router = useRouter();
@@ -105,9 +106,8 @@ const ContactButton = () => {
           onClick={startConversation}
           className="flex items-center justify-center w-[50px] h-[50px] bg-white text-white rounded-full shadow-lg  transition-all duration-300"
         >
-          <img
+          <Img
             src="/logo.png" // استبدل هذا بمسار شعار الموقع
-            alt="شعار الموقع"
             className="w-8 h-8"
           />
         </button>
@@ -127,6 +127,7 @@ const ContactButton = () => {
         <CheckCurrentUserPopup
           isOpen={currentUserCheck}
           onClose={() => setCurrentUserCheck((prev) => !prev)}
+          language="AR"
         />
       }
     </div>

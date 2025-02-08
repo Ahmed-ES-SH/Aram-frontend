@@ -510,6 +510,7 @@ export default function ArticlePage({ id }: { id: number }) {
       <CheckCurrentUserPopup
         isOpen={checkUser}
         onClose={() => setCheckUser((prev) => !prev)}
+        language={language}
       />
     </>
   );

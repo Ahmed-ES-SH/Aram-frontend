@@ -308,7 +308,7 @@ export default function MyCardsComponent({ id }: Props) {
             transition={{ duration: 0.3 }}
           >
             <motion.div
-              className="min-w-[300px] w-full max-w-md bg-gradient-to-br from-purple-600 to-blue-500 rounded-xl shadow-2xl text-white p-8 relative"
+              className="min-w-[300px]  w-full max-w-md bg-gradient-to-br from-purple-600 to-blue-500 rounded-xl shadow-2xl text-white p-8 relative"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}

@@ -5,27 +5,24 @@ import { UseVariables } from "@/app/context/VariablesContext";
 import Img from "../../Img";
 import {
   FaClock,
-  FaComments,
   FaMapMarkerAlt,
   FaPhoneAlt,
-  FaRegObjectUngroup,
   FaStarHalf,
 } from "react-icons/fa";
 import Slider_cards from "../_cardspage/Slider_cards";
 import { instance } from "@/app/Api/axios";
 import { useParams, useRouter } from "next/navigation";
 import Loading from "../../Loading";
-import Footer from "../Footer";
 import { useDataContext } from "@/app/context/DataContext";
-import Link from "next/link";
 import { IoIosTime } from "react-icons/io";
 import MapComponent from "../../MapVariable";
 import BookPopup from "../BookPopup";
 import SuccessPopup from "../../_dashboard/SuccessPopup";
 import CheckCurrentUserPopup from "../_Auth/CheckCurrentUserPopup";
 import { BiMessage } from "react-icons/bi";
-import RandomArticlesSidebar from "../_blogpage/RandomArticlesSidebar";
 import { FaStar } from "react-icons/fa6";
+import SidebarAffiliateServices from "../_affiliate_services/SidebarAffiliateServices";
+import ReviewsNumbersCard from "./ReviewsNumbersCard";
 
 interface OrganizationType {
   id: number;
@@ -261,15 +258,6 @@ export default function OrganizationDetails() {
                       "PM"}
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <FaStar key={i} className="text-main_blue" size={24} />
-                  ))}
-                  <FaStarHalf size={24} className="text-main_blue" />
-                  <p className="text-gray-700 dark:text-gray-300 tracking-[3px] ">
-                    (4.3)
-                  </p>
-                </div>
               </motion.div>
 
               {/* Map */}
@@ -298,9 +286,13 @@ export default function OrganizationDetails() {
                 <p>{language == "EN" ? "Contact Us" : "تواصل معنا"}</p>
               </button>
             </div>
+
+            <ReviewsNumbersCard orgId={Number(id)} />
+
+            {/* slider Cards Section */}
             <Slider_cards />
           </motion.div>
-          <RandomArticlesSidebar length={6} />
+          <SidebarAffiliateServices />
           {showPopup && (
             <BookPopup
               successToggle={successToggle}
@@ -324,6 +316,7 @@ export default function OrganizationDetails() {
             <CheckCurrentUserPopup
               isOpen={CheckCurrentUserPopup}
               onClose={CheckToggle}
+              language={language}
             />
           )}
         </div>

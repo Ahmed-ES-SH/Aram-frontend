@@ -1,8 +1,6 @@
 "use client";
 import OrganizationSlider from "@/app/_components/_website/_servicespage/OrganizationSlider";
 import RandomServicesSidebar from "@/app/_components/_website/_servicespage/RandomServicesSidebar";
-import Footer from "@/app/_components/_website/Footer";
-import Navbar from "@/app/_components/_website/Navbar";
 import Img from "@/app/_components/Img";
 import Loading from "@/app/_components/Loading";
 import { instance } from "@/app/Api/axios";

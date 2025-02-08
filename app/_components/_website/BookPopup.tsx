@@ -22,6 +22,7 @@ export default function BookPopup({
   onClose,
   selectedOrg,
   successToggle,
+  service,
   priceState,
 }: any) {
   const { language } = UseVariables();
@@ -153,7 +154,12 @@ export default function BookPopup({
       formdata.append("customerMobile", currentuser.phone_number);
       formdata.append("currentUserId", currentuser.id);
       formdata.append("notificationOption", "LNK");
-      formdata.append("invoiceValue", selectedOrg.confirmation_price);
+      formdata.append(
+        "invoiceValue",
+        priceState == "service"
+          ? service.confirmation_price
+          : selectedOrg.confirmation_price
+      );
       formdata.append("book_day", formattedDate);
       formdata.append("book_time", selectedTime);
       formdata.append("expire_in", expireTime);
@@ -189,6 +195,8 @@ export default function BookPopup({
     };
     getBookedAppointments();
   }, [selectedOrg.id]);
+
+  console.log(service);
 
   if (loading) return <Loading />;
 
@@ -283,8 +291,18 @@ export default function BookPopup({
             </div>
             <PaymentOption
               setPayState={setPayState}
-              confirmation_status={selectedOrg.confirmation_status}
-              price={selectedOrg.confirmation_price}
+              confirmation_status={
+                priceState == "service"
+                  ? service.confirmation_status == 1
+                    ? true
+                    : false
+                  : selectedOrg.confirmation_status
+              }
+              price={
+                priceState == "service"
+                  ? service.confirmation_price
+                  : selectedOrg.confirmation_price
+              }
             />
           </>
         )}

@@ -16,6 +16,7 @@ export default function Footer() {
     youtube: "",
     instagram: "",
     x_account: "",
+    snapchat: "",
   });
 
   useEffect(() => {
@@ -60,12 +61,13 @@ export default function Footer() {
   useEffect(() => {
     const getData = async () => {
       const response = await instance.get("/getsociallinks");
-      const data = response.data;
+      const data = response.data.data;
       setForm({
-        facebook: data.facebook,
-        youtube: data.youtube,
-        instagram: data.instagram,
+        facebook: data.facebook_account,
+        youtube: data.youtube_account,
+        instagram: data.instgram_account,
         x_account: data.x_account,
+        snapchat: data.snapchat_account,
       });
     };
     getData();
@@ -74,8 +76,9 @@ export default function Footer() {
   const socialIcons = [
     { imgsrc: "/facebook.png", link: form.facebook },
     { imgsrc: "/instagram.png", link: form.instagram },
-    { imgsrc: "/twitter.png", link: form.youtube },
-    { imgsrc: "/youtube.png", link: form.x_account },
+    { imgsrc: "/twitter.png", link: form.x_account },
+    { imgsrc: "/youtube.png", link: form.youtube },
+    { imgsrc: "/snapchat.png", link: form.snapchat },
   ];
 
   return (

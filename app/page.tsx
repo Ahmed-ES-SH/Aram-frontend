@@ -28,7 +28,7 @@ export default function Home() {
       <StatisticsSection />
       <BlogSlider />
       <Contactus_section />
-      <div className="w-fit min-h-screen fixed top-0 right-0 z-40 overflow-hidden">
+      <div className="w-fit min-h-screen max-md:hidden fixed top-0 right-0 z-40 overflow-hidden">
         <SiderbarAds />
       </div>
     </>

@@ -14,6 +14,7 @@ import { BsCartX } from "react-icons/bs";
 import { useDataContext } from "@/app/context/DataContext";
 import ForbiddenPage from "@/app/forbiddenpage/page";
 import { LuCheck, LuCircleX, LuLoader } from "react-icons/lu";
+import CheckCurrentUserPopup from "../_Auth/CheckCurrentUserPopup";
 
 export default function CartPage() {
   const { language } = UseVariables();
@@ -63,6 +64,7 @@ export default function CartPage() {
   const [checkLoading, setCheckLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [checkCurrentuser, setCheckCurrentuser] = useState(false);
 
   useEffect(() => {
     setCardsDetailes((prevcards: any) => {
@@ -95,6 +97,9 @@ export default function CartPage() {
   }, [cartitems]);
 
   const handlesubmit = async (e: any) => {
+    if (!currentuser) {
+      setCheckCurrentuser(true);
+    }
     try {
       const formdata = new FormData();
       formdata.append(
@@ -115,8 +120,6 @@ export default function CartPage() {
       console.log(error);
     }
   };
-
-  console.log(purchaseId);
 
   const checkPromoCode = async () => {
     try {
@@ -143,8 +146,6 @@ export default function CartPage() {
       setCheckLoading(false);
     }
   };
-
-  if (!currentuser) return <ForbiddenPage />;
 
   return (
     <>
@@ -283,7 +284,7 @@ export default function CartPage() {
                   }
                 />
               </div>
-              <div className="flex flex-col items-center gap-2">
+              <div className="flex flex-col items-center gap-2 w-full">
                 <button
                   onClick={checkPromoCode}
                   disabled={checkLoading}
@@ -401,6 +402,13 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+      {checkCurrentuser && (
+        <CheckCurrentUserPopup
+          language={language}
+          onClose={() => setCheckCurrentuser((prev) => !prev)}
+          isOpen={checkCurrentuser}
+        />
+      )}
     </>
   );
 }

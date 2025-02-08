@@ -9,6 +9,7 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
+import { instance } from "../Api/axios";
 
 interface cardType {
   id: number;
@@ -46,6 +47,7 @@ type CartProviderProps = {
 const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartitems, setcartitems] = useState<cardType[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
 
   // تحميل البيانات من localStorage عند أول تحميل
   useEffect(() => {
@@ -56,6 +58,20 @@ const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       }
       setIsInitialized(true); // التأكيد أن التهيئة تمت
     }
+  }, []);
+
+  useEffect(() => {
+    const getdata = async () => {
+      try {
+        const response = await instance.get("/currentuser");
+        if (response.status == 200) {
+          setCurrentUser(response.data.data);
+        }
+      } catch (error: any) {
+        throw error;
+      }
+    };
+    getdata();
   }, []);
 
   // تحديث localStorage فقط بعد اكتمال التهيئة

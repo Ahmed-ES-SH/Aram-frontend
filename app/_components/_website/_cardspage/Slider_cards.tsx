@@ -72,7 +72,7 @@ export default function Slider_part() {
           autoplay={{
             delay: 2500,
           }}
-          spaceBetween={100}
+          spaceBetween={20}
           slidesPerView={3}
           breakpoints={{
             320: {
@@ -88,7 +88,7 @@ export default function Slider_part() {
               slidesPerView: 2, // شريحتان للشاشات المتوسطة
             },
             1024: {
-              spaceBetween: 100,
+              spaceBetween: 20,
               slidesPerView: 3, // ثلاث شرائح للشاشات الأكبر
             },
           }}

@@ -11,6 +11,7 @@ import { FaStarHalfStroke } from "react-icons/fa6";
 
 interface cardType {
   id: number;
+  category_id: number;
   title_ar: string;
   title_en: string;
   description_en: string;
@@ -37,10 +38,13 @@ export default function CardPageDash() {
     image: "",
     duration: "",
     price: 0,
+    category_id: 0,
   });
   const [loading, setloading] = useState<boolean>(true);
   const [image, setimage] = useState<any>(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState<any>(0);
 
   useEffect(() => {
     const getdata = async () => {
@@ -64,7 +68,9 @@ export default function CardPageDash() {
             features_en: Array.isArray(data.features_en)
               ? data.features_en
               : JSON.parse(data.features_en),
+            category_id: data.category_id,
           });
+          setSelectedCategory(data.category_id);
         }
       } catch (error: any) {
         console.error(error);
@@ -89,6 +95,10 @@ export default function CardPageDash() {
     }
   };
 
+  const handleCategoryCahnge = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e.target.value);
+  };
+
   const handleUpdate = async () => {
     try {
       setloading(true);
@@ -101,6 +111,7 @@ export default function CardPageDash() {
       formdata.append("features_en", JSON.stringify(card?.features_en));
       formdata.append("price", card?.price);
       formdata.append("duration", card?.duration);
+      formdata.append("category_id", selectedCategory);
       if (image) formdata.append("image", image);
 
       const response = await instance.post(`/update-card-type/${id}`, formdata);
@@ -123,6 +134,7 @@ export default function CardPageDash() {
             features_en: Array.isArray(data.features_en)
               ? data.features_en
               : JSON.parse(data.features_en),
+            category_id: data.category_id,
           });
         }
       }
@@ -132,6 +144,21 @@ export default function CardPageDash() {
       setloading(false);
     }
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await instance.get(`/all-card-type-categories`);
+        if (response.status == 200) {
+          const data = response.data.data;
+          setCategories(data);
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
 
   if (loading) return <Loading />;
 
@@ -322,6 +349,25 @@ export default function CardPageDash() {
                 ) : (
                   <Img src={card.image} className="w-44 h-32 rounded-md" />
                 )}
+              </div>
+
+              <div className="w-full my-4">
+                <label className="block text-gray-700 dark:text-secend_text font-medium mb-2">
+                  حدد القسم الخاص بالبطاقة
+                </label>
+                <select
+                  value={selectedCategory}
+                  className="w-full px-2 py-4 border shadow-md rounded-md outline-none"
+                  onChange={handleCategoryCahnge}
+                >
+                  {categories &&
+                    categories.length > 0 &&
+                    categories.map((cat: any, index) => (
+                      <option value={cat.id} key={index}>
+                        {`${cat.title_en} / ${cat.title_ar} `}
+                      </option>
+                    ))}
+                </select>
               </div>
 
               <div className="mt-6 flex justify-end">

@@ -2,8 +2,20 @@ import React from "react";
 import PaginatedTable from "../PagenationTable";
 
 export default function PurchaseTable() {
-  const headers = ["id", "صورة المستخدم", "إسم المستخدم", "عدد مستخدمين الكود"];
-  const keys = ["id", "image", "name", "purchases_count"];
+  const headers = [
+    "id",
+    "صورة المستخدم",
+    "إسم المستخدم",
+    "مجموع عمليات الشراء لهذا المروج",
+    "عدد عمليات الشراء لهذا المروج ",
+  ];
+  const keys = [
+    "id",
+    "image",
+    "name",
+    "purchases_sum_amount",
+    "purchases_count",
+  ];
   return (
     <>
       <div className="w-[98%] px-4 py-4 mt-4 m-auto dark:bg-secend_dash rounded-md">
