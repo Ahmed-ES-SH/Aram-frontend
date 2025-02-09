@@ -33,6 +33,7 @@ export default function LoginPage() {
       noAccount: "No account?",
       signUp: "Sign up",
       signIn: "Sign in",
+      ForgotPassword: "Forgot your password?",
     },
     AR: {
       title: "ابدأ اليوم!",
@@ -43,6 +44,7 @@ export default function LoginPage() {
       noAccount: "ليس لديك حساب؟",
       signUp: "سجل الآن",
       signIn: "تسجيل الدخول",
+      ForgotPassword: "هل نسيت كلمة السر ؟",
     },
   };
 
@@ -202,13 +204,22 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-500 dark:text-white max-md:text-white">
-                  {content.noAccount}{" "}
-                  <Link className="underline" href="/signup">
-                    {content.signUp}
+              <div className="flex items-center justify-between max-lg:flex-col-reverse max-lg:items-end">
+                <div className="flex flex-col items-start gap-3 max-lg:self-start">
+                  <p className="text-sm text-gray-500 dark:text-white ">
+                    {content.noAccount}{" "}
+                    <Link className="underline" href="/signup">
+                      {content.signUp}
+                    </Link>
+                  </p>
+
+                  <Link
+                    className="text-sm underline text-gray-500 dark:text-white "
+                    href="/forgetpassword"
+                  >
+                    {content.ForgotPassword}
                   </Link>
-                </p>
+                </div>
 
                 <motion.button
                   whileHover={{ scale: 1.05 }}

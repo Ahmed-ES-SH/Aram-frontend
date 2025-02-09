@@ -146,7 +146,7 @@ export default function CardPage({ api }: props) {
       alert("This item is already in the cart!"); // إشعار
       return;
     } else {
-      addToCart([...cartitems, card]); // إضافة العنصر للسلة
+      addToCart(card); // إضافة العنصر للسلة
       router.push("/cart");
     }
   };
