@@ -4,8 +4,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { MdNotificationsActive } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
+import { UseVariables } from "@/app/context/VariablesContext";
 
 export default function Notificationpopup() {
+  const { language } = UseVariables();
   const { newNotification, currentuser, setnewNotification } = useDataContext();
   const [isVisible, setIsVisible] = useState(false);
   const [progress, setProgress] = useState(100); // نسبة التقدم في الخط
@@ -65,7 +67,9 @@ export default function Notificationpopup() {
       <AnimatePresence>
         {currentuser && newNotification && isVisible && (
           <motion.div
-            className="fixed top-20 right-4 bg-main_orange text-white p-4 rounded-lg shadow-lg w-72"
+            className={`fixed top-20 ${
+              language == "EN" ? "right-4" : "left-4"
+            } bg-main_orange text-white p-4 rounded-lg shadow-lg w-72`}
             initial={{ opacity: 0, x: 300 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 300 }}
