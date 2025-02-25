@@ -207,7 +207,9 @@ export default function UserButton() {
             <AnimatePresence>
               {showNots && (
                 <motion.div
-                  className="fixed top-28 right-4 max-md:right-1 w-96 max-md:w-[95%] h-fit max-h-[80vh] overflow-y-auto hidden-scrollbar bg-white dark:bg-secend_dash shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+                  className={`fixed top-28 ${
+                    language == "EN" ? "right-4" : "left-4"
+                  } max-md:right-1 w-96 max-md:w-[95%] h-fit max-h-[80vh] overflow-y-auto hidden-scrollbar bg-white dark:bg-secend_dash shadow-lg border border-gray-200 dark:border-gray-700 rounded-lg p-4`}
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 50 }}
