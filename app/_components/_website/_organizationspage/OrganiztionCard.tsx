@@ -22,11 +22,12 @@ export default function OrganiztionCard({ organization }: any) {
     ? JSON.parse(organization.location)
     : { address: "عنوان غير معروف ." };
 
-  const category = organization.categories
-    ? language == "EN"
-      ? organization.categories[0].title_en
-      : organization.categories[0].title_ar
-    : "تصنيف غير معرف";
+  const category =
+    organization.categories && organization.categories.length > 0
+      ? language == "EN"
+        ? organization.categories[0].title_en
+        : organization.categories[0].title_ar
+      : "تصنيف غير معرف";
 
   const startConversation = async () => {
     if (!currentuser) {
@@ -66,7 +67,7 @@ export default function OrganiztionCard({ organization }: any) {
         {/* Image Section */}
         <div className="relative w-full md:w-1/3 h-48 md:h-full">
           <Img
-            className="w-full h-full object-cover"
+            className="w-full h-[350px] max-md:h-full object-cover"
             src={
               organization.image
                 ? organization.image
@@ -94,20 +95,24 @@ export default function OrganiztionCard({ organization }: any) {
           {/* Description */}
           <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
             {organization.description && language === "EN"
-              ? organization.description_en
+              ? organization?.description_en.length > 200
+                ? organization.description_en + "..."
+                : organization.description_en
+              : organization?.description_ar.length > 200
+              ? organization.description_ar + "..."
               : organization.description_ar}
           </p>
 
           {/* Category */}
           <div className="flex items-center gap-2 mt-4 text-teal-500 text-sm">
             <FaBuilding />
-            <span>{category}</span>
+            <span>{category ? category : "تصنيف غير محدد "}</span>
           </div>
 
           {/* Address */}
           <div className="flex items-center gap-2 mt-2 text-gray-500 text-sm">
             <FaMapMarkerAlt />
-            <span>{currentlocation.address}</span>
+            <span>{currentlocation.address || "عنوان غير محدد"}</span>
           </div>
         </div>
 

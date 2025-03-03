@@ -12,15 +12,25 @@ interface props {
 
 export default function OrganiztionSliderCard({ organization }: props) {
   const { language }: any = UseVariables();
+  const defaultLocation = {
+    latitude: 21.4735,
+    longitude: 55.9754,
+    address: "سلطنة عمان",
+  };
   const currentlocation = organization.location
-    ? JSON.parse(organization.location)
-    : { address: "عنوان غير معروف ." };
+    ? typeof organization.location == "string"
+      ? JSON.parse(organization.location)
+      : organization.location
+    : defaultLocation;
 
-  const category = organization.categories[0]
-    ? language == "EN"
-      ? organization.categories[0].title_en
-      : organization.categories[0].title_ar
-    : "تصنيف غير معرف";
+  const category =
+    organization.categories.length > 0
+      ? organization.categories[0]
+        ? language == "EN"
+          ? organization.categories[0].title_en
+          : organization.categories[0].title_ar
+        : "تصنيف غير معرف"
+      : "تصنيف غير معرف";
 
   return (
     <motion.div

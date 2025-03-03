@@ -26,9 +26,9 @@ export const navbarlinks = [
     to: "/organizations",
   },
   {
-    title_ar: "الخدمات",
-    title_en: "Services",
-    to: "/services",
+    title_ar: "خدمات التابعة لآرام",
+    title_en: "Affiliate Aram Services",
+    to: "/affiliateservices",
   },
   {
     title_ar: "البطاقات",
@@ -341,6 +341,7 @@ export const Updatetexts: any = {
     descriptionAr: "Description in Arabic",
     descriptionEn: "Description in English",
     serviceImage: "Service Image",
+    discountPercent: "Discount",
     chooseImage: "Choose Image",
     removeImage: "Remove Image",
     confirmationPrice: "Confirmation Price",
@@ -361,6 +362,7 @@ export const Updatetexts: any = {
     titleAr: "العنوان بالعربية",
     titleEn: "العنوان بالإنجليزية",
     descriptionAr: "الوصف بالعربية",
+    discountPercent: "نسبة الخصم",
     descriptionEn: "الوصف بالإنجليزية",
     serviceImage: "صورة الخدمة",
     chooseImage: "اختر صورة",

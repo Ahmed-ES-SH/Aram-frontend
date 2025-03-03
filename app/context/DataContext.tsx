@@ -100,7 +100,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     fetchData("/currentuser", setcurrentuser);
     fetchData("/card-types", setActiveCards);
     fetchData("/random-offers", setRandomOffers);
-    fetchData("/active-services", setActiveServices);
+    fetchData("/active-random-affiliate-services", setActiveServices);
     fetchData("/active-organizations", setActiveOrganizations);
     fetchData("/active-articals", setActiveArticles);
     fetchData("/random-five-articles", setrandomArticles);

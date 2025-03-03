@@ -228,7 +228,10 @@ export default function Organizations() {
 
   return (
     <>
-      <div className="mt-20">
+      <div
+        style={{ direction: language == "EN" ? "ltr" : "rtl" }}
+        className="mt-20"
+      >
         <Separator
           bg_dark="dark:bg-secend_dash"
           text={language === "EN" ? "Aram Organizations" : "منظمات آرام"}

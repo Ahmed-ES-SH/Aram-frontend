@@ -138,7 +138,9 @@ export default function AffiliateServices() {
         // تعيين noData إلى true عند عدم وجود بيانات
       }
     } catch (error: any) {
-      console.log(error);
+      if (error.status == 404) {
+        setSearchResult([]); // لا توجد بيانات
+      }
     } finally {
       setLoading(false);
       setSearchLoading(false);

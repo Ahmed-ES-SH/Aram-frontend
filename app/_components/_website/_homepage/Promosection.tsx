@@ -127,7 +127,7 @@ export default function PromoSection({
               >
                 <Img
                   src={image || "/test.png"}
-                  className="h-40 w-full object-cover sm:h-56 md:h-full rounded-sm"
+                  className="h-40 w-full object-cover sm:h-56 md:h-[40vh] rounded-sm"
                 />
               </motion.div>
 
@@ -138,7 +138,7 @@ export default function PromoSection({
               >
                 <Img
                   src={image_2 || "/test.png"}
-                  className="h-40 w-full object-cover sm:h-56 md:h-full rounded-sm"
+                  className="h-40 w-full object-cover sm:h-56 md:h-[40vh] rounded-sm"
                 />
               </motion.div>
             </motion.div>

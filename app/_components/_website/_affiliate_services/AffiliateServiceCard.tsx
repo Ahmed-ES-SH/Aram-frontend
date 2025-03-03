@@ -47,10 +47,18 @@ export default function AffiliateServiceCard({ service, index, direct }: any) {
           whileHover={{ scale: 1.1 }}
           className="w-full block min-h-[450px] h-fit relative group z-30 bg-white dark:bg-main_dash dark:text-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300  cursor-pointer"
         >
+          <motion.div
+            className="absolute top-2 right-2  duration-200 bg-red-400 border  border-dashed text-white text-xl font-bold rounded-full w-16 h-16 flex items-center justify-center z-10"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+          >
+            {service.discount_percent || 0} %
+          </motion.div>
           {/* صورة الخدمة */}
           <Img
             src={service.image ? service.image : "/services/service-03.jpg"}
-            className="w-full h-48 object-cover"
+            className="w-full h-52 object-cover"
           />
 
           {/* محتوى البطاقة */}
@@ -74,11 +82,13 @@ export default function AffiliateServiceCard({ service, index, direct }: any) {
             </p>
 
             {/* سعر التأكيد وعدد الطلبات */}
-            <div className="flex justify-between items-center mb-4">
+            {/* <div className="flex justify-between items-center mb-4">
               <div className="text-gray-700 flex items-center gap-2">
                 <FaTags className="mr-2 text-blue-500" />
                 <div className="px-2 py-1 flex items-center gap-1 rounded-md shadow-sm text-white text-center bg-green-300">
-                   <span>{activeCurrency.symbol}</span>
+                  <span>
+                    {service.confirmation_status ? activeCurrency.symbol : ""}
+                  </span>
                   {service.confirmation_status
                     ? Number(service.confirmation_price * Currency).toFixed(2)
                     : "Free"}
@@ -88,7 +98,7 @@ export default function AffiliateServiceCard({ service, index, direct }: any) {
                 <FaShoppingCart className="mr-2 text-purple-500" />
                 {service.number_of_orders}
               </span>
-            </div>
+            </div> */}
 
             {/* لوجو المنظمة واسمها */}
             <div className="flex items-center gap-2 mb-4">

@@ -18,9 +18,9 @@ export default function UserDeatiles({ userId }: { userId: number }) {
   const [formData, setFormData] = useState<any>({});
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [location, setlocation] = useState({
-    latitude: 31.9539,
-    longitude: 35.9106,
-    address: "عمان، الأردن",
+    latitude: 21.4735,
+    longitude: 55.9754,
+    address: "سلطنة عمان",
   });
 
   const handleChange = (

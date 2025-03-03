@@ -11,13 +11,13 @@ import VisitsTable from "../_components/_dashboard/_maindash/VisitorsTable";
 import CardVisitsTable from "../_components/_dashboard/_maindash/CardVisitsTable";
 import NewUsersPromoterTable from "../_components/_dashboard/_maindash/NewUsersPromoterTable";
 import PromotionalCardsTable from "../_components/_dashboard/_maindash/PromotionalCardsTable";
+import SummaryPromotersStatsWithCards from "../_components/_dashboard/_maindash/SummaryPromotersStatsWithCards";
 
 export default function page() {
   const location = {
-    address:
-      "Muzdalifah Road, كدي, محافظة مكة المكرمة, منطقة مكة المكرمة, 24243, السعودية",
-    latitude: 21.40281772305478,
-    longitude: 39.84603881835938,
+    latitude: 21.4735,
+    longitude: 55.9754,
+    address: "سلطنة عمان",
   };
   return (
     <>
@@ -29,6 +29,7 @@ export default function page() {
         <TobOrganizations />
         <BillsSummaryTable />
         <NewUsersPromoterTable />
+        <SummaryPromotersStatsWithCards />
         <PromotionalCardsTable />
         <PurchaseTable />
         <VisitsTable />

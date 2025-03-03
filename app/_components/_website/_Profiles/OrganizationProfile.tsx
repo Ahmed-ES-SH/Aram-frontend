@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import SuccessPopup from "../../_dashboard/SuccessPopup";
 import Loading from "../../Loading";
 import { UseVariables } from "@/app/context/VariablesContext";
-import { FaFile, FaFileUpload, FaPen, FaTimes } from "react-icons/fa";
+import { FaFile, FaFileUpload, FaPen, FaTimes, FaTrash } from "react-icons/fa";
 import { useDataContext } from "@/app/context/DataContext";
 import ForbiddenPage from "@/app/forbiddenpage/page";
 import { LuClock10, LuFileCheck } from "react-icons/lu";
@@ -27,9 +27,9 @@ export default function OrganizationProfile({ id }: any) {
   const { language }: any = UseVariables();
   const { currentuser, allCategories, type } = useDataContext();
   const defaultLocation = {
-    latitude: 31.9539,
-    longitude: 35.9106,
-    address: "عمان، الأردن",
+    latitude: 21.4735,
+    longitude: 55.9754,
+    address: "سلطنة عمان",
   };
   {
     /* 
@@ -58,6 +58,7 @@ export default function OrganizationProfile({ id }: any) {
     description_en: "",
     accaptable_message: "",
     unaccaptable_message: "",
+    booking_status: "",
     confirmation_status: "",
     confirmation_price: "",
     phone_number: "",
@@ -107,6 +108,8 @@ export default function OrganizationProfile({ id }: any) {
   const [cooperationFile, setcooperationFile] = useState<any>(null);
   const [image, setimage] = useState<File | null>(null);
   const [icon, seticon] = useState<File | null>(null);
+  const [features, setFeatures] = useState<any>([]);
+  const [newFeature, setNewFeature] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<catgeorytype[]>(
     []
   );
@@ -156,7 +159,10 @@ export default function OrganizationProfile({ id }: any) {
         const response = await instance.get(`/organization/${id}`);
         if (response.status == 200) {
           const data = response.data.data;
-          const orgCategoriesIds = JSON.parse(data.categories_ids);
+          const orgCategoriesIds =
+            typeof data.categories_ids == "string"
+              ? JSON.parse(data.categories_ids)
+              : data.categories_ids || [];
           setForm({
             email: data.email,
             password: data.password,
@@ -164,6 +170,7 @@ export default function OrganizationProfile({ id }: any) {
             title_en: data.title_en,
             description_ar: data.description_ar,
             description_en: data.description_en,
+            booking_status: data.booking_status,
             accaptable_message: data?.accaptable_message,
             confirmation_price: data?.confirmation_price,
             confirmation_status: data?.confirmation_status,
@@ -227,6 +234,20 @@ export default function OrganizationProfile({ id }: any) {
     }
   };
 
+  const addFeature = () => {
+    if (newFeature.trim()) {
+      // التحقق من أن الحقل غير فارغ
+      setFeatures((prevFeatures: any) => [...prevFeatures, newFeature]); // إضافة العنصر الجديد إلى المصفوفة
+      setNewFeature(""); // مسح حقل الإدخال بعد الإضافة
+    }
+  };
+
+  const removeFeature = (index: number) => {
+    setFeatures((prevFeatures: any) =>
+      prevFeatures.filter((_: any, i: any) => i !== index)
+    );
+  };
+
   {
     /* 
 ///////////////////////////////////////////////////////
@@ -254,6 +275,8 @@ export default function OrganizationProfile({ id }: any) {
           formData.append(key, value);
         }
       });
+
+      formData.append("booking_status", form.booking_status ? "1" : "0");
       formData.append(
         "confirmation_status",
         form.confirmation_status ? "1" : "0"
@@ -265,6 +288,9 @@ export default function OrganizationProfile({ id }: any) {
       if (selectedCategories.length > 0) {
         formData.append("categories_ids", JSON.stringify(selectedCategories));
       }
+
+      if (features.length > 0)
+        formData.append("features", JSON.stringify(features));
       if (image) {
         formData.append("image", image);
       }
@@ -279,7 +305,10 @@ export default function OrganizationProfile({ id }: any) {
       if (response.status === 201) {
         setIsPopupVisible(true);
         const data = response.data.data;
-        const orgCategoriesIds = JSON.parse(data.categories_ids);
+        const orgCategoriesIds =
+          typeof data.categories_ids == "string"
+            ? JSON.parse(data.categories_ids)
+            : data.categories_ids;
         const location = JSON.parse(data.location);
         setForm({
           email: data.email,
@@ -288,6 +317,7 @@ export default function OrganizationProfile({ id }: any) {
           title_en: data.title_en,
           description_ar: data.description_ar,
           description_en: data.description_en,
+          booking_status: data.booking_status,
           accaptable_message: data.accaptable_message,
           unaccaptable_message: data.unaccaptable_message,
           confirmation_price: data?.confirmation_price,
@@ -719,6 +749,64 @@ export default function OrganizationProfile({ id }: any) {
 ----------------------------------start map part
 ////////////////////////////////////////////////
 */}
+              {/* الميزات */}
+              <label> المميزات / Features </label>
+              <div className="mt-1 w-full bg-white py-2 px-1 rounded-md shadow-md">
+                {features && Array.isArray(features) && features.length > 0 ? (
+                  features.map((feature: any, index: number) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between gap-3 bg-gray-100 p-2 rounded-lg mb-2"
+                    >
+                      <h2
+                        style={{ overflowWrap: "anywhere" }}
+                        className="block"
+                      >
+                        {feature}
+                      </h2>
+                      <button
+                        type="button"
+                        onClick={() => removeFeature(index)}
+                        className="text-red-500 hover:text-red-600 hover:scale-110 duration-200"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <div className="w-full min-h-[20vh] flex items-center justify-center">
+                    <p>لم يتم اضافة اى مميزات حتى الأن</p>
+                  </div>
+                )}
+                <label
+                  className="py-2 mb-2 border-b border-main_blue"
+                  htmlFor="feature"
+                >
+                  قم بكتاية الميزة من هنا{" "}
+                </label>
+                <div className="flex gap-2 mt-4">
+                  <input
+                    placeholder="قم بكتاية الميزة من هنا ثم اضغط على أضف الميزة"
+                    type="text"
+                    value={newFeature}
+                    onChange={(e) => setNewFeature(e.target.value)}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-main_orange"
+                  />
+                  <button
+                    type="button"
+                    onClick={addFeature}
+                    className={`px-4 py-2 duration-300 bg-main_orange text-white rounded-lg hover:bg-indigo-700 `}
+                  >
+                    {"أضف الميزة"}
+                  </button>
+                </div>
+              </div>
+
+              {errors && errors["features"] && (
+                <p className="text-red-400 my-2 text-[16px] underline underline-red-400">
+                  {errors["features"]}
+                </p>
+              )}
 
               <motion.div
                 className="w-full relative"

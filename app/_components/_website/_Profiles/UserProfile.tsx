@@ -17,9 +17,9 @@ export default function UserProfile({ id }: any) {
   const { language } = UseVariables();
   const openinput = useRef<any>(null);
   const Defaultlocation = {
-    latitude: 31.9539,
-    longitude: 35.9106,
-    address: "عمان، الأردن",
+    latitude: 21.4735,
+    longitude: 55.9754,
+    address: "سلطنة عمان",
   };
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -37,11 +37,7 @@ export default function UserProfile({ id }: any) {
   const [imagePreview, setImagePreview] = useState<any>("");
   const [loading, setLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
-  const [location, setlocation] = useState({
-    latitude: 31.9539,
-    longitude: 35.9106,
-    address: "عمان، الأردن",
-  });
+  const [location, setlocation] = useState(Defaultlocation);
 
   const [showConfirmPasswordPopup, setshowConfirmPasswordPopup] =
     useState(false);

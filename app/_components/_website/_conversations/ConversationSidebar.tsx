@@ -68,9 +68,13 @@ export default function ConversationSidebar() {
 
   return (
     <>
-      <div className="  h-full min-h-screen  w-fit max-lg:fixed top-24 left-0 max-lg:z-[999] flex items-center">
+      <div
+        className={` h-screen overflow-y-auto   w-[350px] max-lg:fixed top-24 left-0 max-lg:z-[999] flex items-center ${
+          open ? "w-[350px] p-1" : "w-fit p-0"
+        }`}
+      >
         <div
-          className={` h-full min-h-[103.5vh] duration-300 overflow-x-hidden overflow-y-auto bg-gray-100 dark:bg-main_dash  border-r border-gray-200 dark:border-gray-700 ${
+          className={` h-full  duration-300 overflow-x-hidden  overflow-y-auto bg-gray-100 dark:bg-main_dash  border-r border-gray-200 dark:border-gray-700 ${
             open ? "w-[300px] p-1" : "w-0 p-0"
           }`}
         >

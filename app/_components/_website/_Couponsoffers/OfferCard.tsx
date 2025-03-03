@@ -70,7 +70,7 @@ export default function OfferCard({ toggleOpen, offer, index }: Props) {
       {/* دائرة نسبة الخصم */}
       {offer.discount_value > 0 && (
         <motion.div
-          className="absolute top-2 right-2  duration-200 bg-red-400 border  border-dashed text-white text-xs font-bold rounded-full w-12 h-12 flex items-center justify-center z-10"
+          className="absolute top-2 right-2  duration-200 bg-red-400 border  border-dashed text-white text-lg px-1 font-bold rounded-full w-16 h-16 flex items-center justify-center z-10"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.3, delay: 0.2 }}

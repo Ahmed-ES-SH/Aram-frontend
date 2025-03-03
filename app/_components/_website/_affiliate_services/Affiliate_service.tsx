@@ -94,6 +94,7 @@ export default function Affiliate_service({ serviceId }: props) {
   return (
     <>
       <motion.div
+        style={{ direction: language == "EN" ? "ltr" : "rtl" }}
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -50 }}
@@ -118,6 +119,14 @@ export default function Affiliate_service({ serviceId }: props) {
               src={service.icon ? service.icon : "/logo.png"}
               className="w-10 h-10 absolute bottom-2 left-2 rounded-full"
             />
+            <motion.div
+              className="absolute top-2 right-2  duration-200 bg-red-400 border  border-dashed text-white text-xl font-bold rounded-full w-16 h-16 flex items-center justify-center z-10"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              {service.discount_percent || 0} %
+            </motion.div>
           </motion.div>
 
           {/* عنوان الخدمة */}
@@ -176,7 +185,7 @@ export default function Affiliate_service({ serviceId }: props) {
           </motion.div>
 
           {/* قسم الأسئلة الشائعة */}
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 1.2 }}
@@ -213,9 +222,9 @@ export default function Affiliate_service({ serviceId }: props) {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </motion.div> */}
 
-          <div className="button w-full mt-8 mx-auto">
+          {/* <div className="button w-full mt-8 mx-auto">
             <button
               onClick={popupToggle}
               className="w-[30%] max-lg:w-1/2 max-md:w-[90%]  mx-auto h-[40px] flex items-center gap-4 duration-200 justify-center rounded-md shadow-md my-2 bg-main_orange text-white border border-transparent hover:border-main_orange hover:bg-white hover:text-black"
@@ -223,7 +232,7 @@ export default function Affiliate_service({ serviceId }: props) {
               <IoIosTime className="size-4 " />
               <p>{language == "EN" ? "Book Now" : "إحجز الأن"}</p>
             </button>
-          </div>
+          </div> */}
           <OrganizationSlider />
         </div>
 

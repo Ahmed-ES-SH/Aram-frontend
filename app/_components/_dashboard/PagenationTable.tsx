@@ -85,7 +85,7 @@ export default function PaginatedTable({
       {loading ? (
         <Loading />
       ) : (
-        <div className=" w-full  border hidden-scrollbar h-full overflow-y-auto border-main_orange dark:border-gray-700 p-2 rounded-md text-black mt-2">
+        <div className=" w-full   border hidden-scrollbar h-full overflow-y-auto border-main_orange dark:border-gray-700 p-2 rounded-md text-black mt-2">
           <div className="overflow-x-auto rounded-t-lg">
             <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm dark:divide-gray-300/20   dark:bg-secend_dash ">
               <thead className="ltr:text-left rtl:text-right">
@@ -202,6 +202,22 @@ export default function PaginatedTable({
                               alt="logo"
                               className="w-[60px] h-[60px] rounded-full"
                             />
+                          ) : key == "promoter.image" ? (
+                            <Image
+                              src={
+                                item["promoter"]?.image
+                                  ? item["promoter"]?.image
+                                  : "/images/userbg.png"
+                              }
+                              width={1024}
+                              height={1280}
+                              alt="logo"
+                              className="w-[60px] h-[60px] rounded-full"
+                            />
+                          ) : key == "promoter.name" ? (
+                            <p>{item["promoter"]?.name}</p>
+                          ) : key == "promoter.user_code" ? (
+                            item["promoter"]?.user_code
                           ) : key == "amount" ||
                             key == "purchases_sum_amount" ? (
                             <p>{`$ ${item[key]} `}</p>
@@ -308,7 +324,11 @@ export default function PaginatedTable({
                         <div className="flex items-center  gap-4">
                           {api != "/members" && (
                             <Link
-                              href={`/dashboard${editpath}/${item["id"]}`}
+                              href={`/dashboard${editpath}/${item["id"]}${
+                                item["promoter_code"]
+                                  ? `?promoter_code=${item["promoter_code"]}`
+                                  : ""
+                              }`}
                               className="text-sky-500"
                             >
                               <FaPen />

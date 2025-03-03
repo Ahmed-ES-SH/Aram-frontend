@@ -64,9 +64,9 @@ export default function Hero_video_dash() {
     <>
       <div
         style={{ direction: language == "EN" ? "ltr" : "rtl" }}
-        className="w-full mt-16 flex flex-col items-center rounded-md "
+        className="w-full  flex flex-col items-center rounded-md "
       >
-        <div className="relative overflow-hidden h-screen flex items-center justify-center w-full bg-black">
+        <div className="relative  overflow-hidden h-screen flex items-center justify-center w-full bg-black">
           {/* فيديو الخلفية */}
           {linkVideo && (
             <iframe

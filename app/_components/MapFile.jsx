@@ -13,7 +13,11 @@ const customIcon = L.icon({
 });
 
 export default function LocationPicker({
-  location = { latitude: 31.9539, longitude: 35.9106, address: "عمان، الأردن" },
+  location = {
+    latitude: 21.4735,
+    longitude: 55.9754,
+    address: "سلطنة عمان",
+  },
   setLocation,
   onLocationSelect,
 }) {

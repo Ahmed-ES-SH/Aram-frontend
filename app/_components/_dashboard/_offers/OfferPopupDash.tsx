@@ -246,7 +246,7 @@ export default function OfferPopupDash({
               {"تأكيد تغيير الحالة"}
             </h3>
             <p className="text-gray-600 mb-4">
-              {"سيتم إرسال الإشعار التالي إلى المركز الطبى :"}
+              {"سيتم إرسال الإشعار التالي إلى المنظمة :"}
             </p>
             <textarea
               style={{ direction: "rtl" }}

@@ -27,6 +27,7 @@ interface formType {
   features_ar: string[];
   image: string | File;
   icon: string | File;
+  discount_percent: number;
   confirmation_price: string;
   confirmation_status: boolean | null;
   category_id: any;
@@ -41,6 +42,7 @@ export default function AddAffiliateService() {
       titleEn: "Title in English",
       descriptionAr: "Description in Arabic",
       descriptionEn: "Description in English",
+      discountPercent: "Discount",
       serviceImage: "Service Image",
       chooseImage: "Choose Image",
       removeImage: "Remove Image",
@@ -63,6 +65,7 @@ export default function AddAffiliateService() {
       titleEn: "العنوان بالإنجليزية",
       descriptionAr: "الوصف بالعربية",
       descriptionEn: "الوصف بالإنجليزية",
+      discountPercent: "نسبة الخصم",
       serviceImage: "صورة الخدمة",
       chooseImage: "اختر صورة",
       removeImage: "إزالة الصورة",
@@ -101,6 +104,7 @@ export default function AddAffiliateService() {
     features_en: [],
     features_ar: [],
     image: "",
+    discount_percent: 0,
     icon: "",
     confirmation_price: "",
     confirmation_status: false,
@@ -169,6 +173,8 @@ export default function AddAffiliateService() {
     formData.append("image", form.image);
     formData.append("category_id", selectedCategories[0]);
     formData.append("status", "0");
+    if (form.discount_percent > 0)
+      formData.append("discount_percent", form.discount_percent.toString());
     formData.append("organization_id", orgId);
     formData.append("features_en", JSON.stringify(form.features_en));
     formData.append("features_ar", JSON.stringify(form.features_ar));
@@ -190,6 +196,7 @@ export default function AddAffiliateService() {
           features_ar: [],
           image: "",
           icon: "",
+          discount_percent: 0,
           confirmation_price: "",
           confirmation_status: null,
           category_id: "",
@@ -443,6 +450,28 @@ export default function AddAffiliateService() {
                   onChange={handleChange}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-main_orange"
                   rows={4}
+                />
+              </div>
+
+              {/*  نسبة الخصم */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-white pb-1 mb-2 border-b border-main_orange w-fit">
+                  {texts[language].discountPercent}
+                </label>
+                {errors &&
+                  errors["discount_percent"] &&
+                  errors["discount_percent"][0] &&
+                  errors["discount_percent"][0][language] && (
+                    <p className="text-red-400 my-3">
+                      {errors["discount_percent"][0][language]}
+                    </p>
+                  )}
+                <input
+                  type="text"
+                  name="discount_percent"
+                  value={form.discount_percent}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-main_orange"
                 />
               </div>
 

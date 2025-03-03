@@ -449,8 +449,8 @@ export default function ConversationComponent({ conversationId }: Props) {
 
   return (
     <>
-      <div className="w-full pt-8 min-h-screen h-fit  overflow-hidden   max-md:w-[98%] max-md:mx-auto max-md:mb-2  max-md:h-fit  flex items-start  rounded-t-md relative ">
-        <div className="w-full h-screen relative  flex-grow">
+      <div className="w-full pt-8 h-screen  overflow-hidden   max-md:w-[98%] max-md:mx-auto   max-md:h-fit  flex items-start  rounded-t-md relative ">
+        <div className="w-full h-full relative  flex-grow">
           <div className=" md:hidden flex items-center justify-between w-full  rounded-t-md py-2 px-2 bg-main_orange text-white mb-4">
             <motion.div className="cursor-pointer flex items-end gap-4 relative w-fit mr-auto">
               <div className="w-[52px] h-[52px] relative flex items-center justify-center rounded-full bg-white ">
@@ -491,7 +491,7 @@ export default function ConversationComponent({ conversationId }: Props) {
           </div>
           <div
             ref={messagesEndRef}
-            className="space-y-4  p-6 h-[80%] pb-24 dark:bg-secend_dash overflow-y-auto hidden-scrollbar"
+            className="space-y-4  p-6 h-[82.2%]  dark:bg-secend_dash overflow-y-auto hidden-scrollbar"
           >
             {hasMore && (
               <div
@@ -607,7 +607,7 @@ export default function ConversationComponent({ conversationId }: Props) {
               </span>
             </motion.div>
           ) : (
-            <div className="flex flex-col absolute bottom-0 left-0 w-full justify-center  p-2 bg-gray-300 dark:bg-main_dash ">
+            <div className="flex flex-col  w-full justify-center  p-2 bg-gray-300 dark:bg-main_dash ">
               {/* منطقة إدخال النص */}
               <textarea
                 name="content"

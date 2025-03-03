@@ -57,9 +57,9 @@ export default function Page() {
   });
 
   const [location, setlocation] = useState<any>({
-    latitude: 31.9539,
-    longitude: 35.9106,
-    address: "عمان، الأردن",
+    latitude: 21.4735,
+    longitude: 55.9754,
+    address: "سلطنة عمان",
   });
   const [image, setImage] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -180,9 +180,9 @@ export default function Page() {
         setIcon(null);
         setSelectedCategories([]);
         setlocation({
-          latitude: 31.9539,
-          longitude: 35.9106,
-          address: "عمان، الأردن",
+          latitude: 21.4735,
+          longitude: 55.9754,
+          address: "سلطنة عمان",
         });
       }
     } catch (error: any) {

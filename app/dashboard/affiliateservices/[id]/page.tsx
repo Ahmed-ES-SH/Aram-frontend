@@ -32,6 +32,7 @@ interface formType {
   features_ar: string[];
   image: string | File;
   icon: string | File;
+  discount_percent: number;
   confirmation_price: string;
   confirmation_status: boolean | null;
   organization_id: number | string;
@@ -54,6 +55,7 @@ export default function AffilateService({ searchParams }: any) {
     features_ar: [],
     image: "",
     icon: "",
+    discount_percent: 0,
     confirmation_price: "",
     confirmation_status: null,
     organization_id: "",
@@ -293,6 +295,19 @@ export default function AffilateService({ searchParams }: any) {
                   disabled={true}
                   className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-main_orange"
                   rows={4}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-white pb-1 mb-2 border-b border-main_orange w-fit">
+                  {Updatetexts["AR"].discountPercent || ""}
+                </label>
+                <input
+                  type="text"
+                  name="discount_percent"
+                  value={form.discount_percent || 0}
+                  disabled={true}
+                  className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-main_orange"
                 />
               </div>
 

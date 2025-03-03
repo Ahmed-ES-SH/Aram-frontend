@@ -63,7 +63,7 @@ export default function FilterAffiliateServices({
         isOpen
           ? "max-xl:w-[400px] opacity-100 z-[9999999] "
           : "max-xl:w-0 max-xl:-z-1 max-xl:opacity-0  "
-      }   hidden-scrollbar duration-500 overflow-hidden shadow-md h-full max-xl:fixed top-0 right-0 xl:relative  xl:w-1/4  min-h-screen overflow-y-auto `}
+      }   hidden-scrollbar duration-500 overflow-hidden shadow-md  max-xl:fixed top-0 right-0 xl:relative  xl:w-1/4  h-screen overflow-y-auto  `}
     >
       {loading ? (
         <div className="min-h-[90vh] h-full w-full flex items-center justify-center">

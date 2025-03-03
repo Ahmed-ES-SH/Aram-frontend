@@ -64,11 +64,11 @@ export default function Organizations_section() {
                       {language == "EN" ? org.title_en : org.title_ar}
                     </h2>
                     <h3 className="text-lg font-semibold text-teal-400 mb-2">
-                      {org.categories[0].title_en
+                      {org.categories.length > 0
                         ? language == "EN"
                           ? org.categories[0].title_en
                           : org.categories[0].title_ar
-                        : ""}
+                        : "تصنيف غير محدد"}
                     </h3>
                     <p
                       style={{ direction: language == "EN" ? "ltr" : "rtl" }}

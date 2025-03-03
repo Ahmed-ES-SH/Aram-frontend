@@ -15,6 +15,7 @@ export default function StatsPopup({ onClose }: Props) {
   const { language } = UseVariables();
   const { currentuser } = useDataContext();
   const userId = currentuser && currentuser.id;
+  const userCode = currentuser && currentuser.user_code;
   const [visits, setVisits] = useState(0);
   const [cardVisits, setcardVisits] = useState(0);
   const [purchases, setPurchases] = useState(0);
@@ -51,9 +52,12 @@ export default function StatsPopup({ onClose }: Props) {
         setLoading(false);
       }
     };
-    getStats(`/visits-count-user/${userId}`, setVisits);
+    getStats(`/new-members-count-by-promoter/${userId}`, setVisits);
     getStats(`/card-visits-count-user/${userId}`, setcardVisits);
-    getStats(`/user-purchases-count/${userId}`, setPurchases);
+    getStats(
+      `/cards-statics-count-for-promoter/${encodeURIComponent(userCode)}`,
+      setPurchases
+    );
   }, [userId]);
 
   const t = translations[language] || translations.ar;

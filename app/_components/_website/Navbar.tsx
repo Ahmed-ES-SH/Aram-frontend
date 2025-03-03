@@ -232,11 +232,11 @@ export default function Navbar() {
                       href={link.to == "/services" ? "#" : link.to}
                     >
                       <p>{language == "EN" ? link.title_en : link.title_ar}</p>
-                      {link.title_en == "Services" && (
+                      {/* {link.title_en == "Services" && (
                         <FaChevronDown className="text-[10px]" />
-                      )}
+                      )} */}
                     </Link>
-                    {link.title_en == "Services" && (
+                    {/* {link.title_en == "Services" && (
                       <AnimatePresence>
                         {isHovered && (
                           <motion.div
@@ -267,7 +267,7 @@ export default function Navbar() {
                           </motion.div>
                         )}
                       </AnimatePresence>
-                    )}
+                    )} */}
                   </li>
                 ))}
               </ul>

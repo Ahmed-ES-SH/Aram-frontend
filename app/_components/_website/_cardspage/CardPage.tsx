@@ -1,6 +1,6 @@
 "use client";
 // import { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   FaTwitter,
   FaLinkedin,
@@ -8,6 +8,7 @@ import {
   FaCheckCircle,
   FaMoneyBill,
   FaTimes,
+  FaTruckLoading,
 } from "react-icons/fa";
 import CardComponent from "../Cardcomponent";
 import { UseVariables } from "@/app/context/VariablesContext";
@@ -19,6 +20,9 @@ import { instance } from "@/app/Api/axios";
 import { Cardcontext } from "@/app/context/CartContext";
 import RandomOrganizationsSidebar from "../RandomOrganizationSidebar";
 import { useDataContext } from "@/app/context/DataContext";
+import { BiSolidOffer } from "react-icons/bi";
+import SuccessPopup from "../../_dashboard/SuccessPopup";
+import { AiOutlineLoading } from "react-icons/ai";
 
 interface cardType {
   id: number;
@@ -41,9 +45,10 @@ interface props {
 export default function CardPage({ api }: props) {
   const { language }: any = UseVariables();
   const { cartitems, addToCart }: any = Cardcontext();
-  const { currentuser } = useDataContext();
+  const { currentuser, type } = useDataContext();
   const userCode = btoa(currentuser && currentuser.user_code);
   const router = useRouter();
+  const userId = currentuser && currentuser.id;
   const params = useParams();
   const searchParams = useSearchParams();
   const promoCode: any = searchParams.get("currentCode");
@@ -63,7 +68,7 @@ export default function CardPage({ api }: props) {
     quantity: 0,
   });
   const [loading, setloading] = useState<boolean>(true);
-
+  const [copunePopup, setcopunePopup] = useState(false);
   const cardDetails = {
     title: language === "EN" ? card.title_en : card.title_ar,
     description: language === "EN" ? card.description_en : card.description_ar,
@@ -108,9 +113,12 @@ export default function CardPage({ api }: props) {
     };
     getdata();
   }, []);
-
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [copuneLoading, setCopuneLoading] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
+  const [copune, setCopune] = useState("");
+  const [error, seterror] = useState<any>({ AR: "", EN: "" });
   const [copied, setCopied] = useState<{ code: boolean; link: boolean }>({
     code: false,
     link: false,
@@ -121,6 +129,35 @@ export default function CardPage({ api }: props) {
     const currentUrl = window.location.href; // الحصول على الرابط الحالي
     setShareUrl(currentUrl);
     setShowPopup(true);
+  };
+
+  const handleUseCopuune = async () => {
+    try {
+      seterror({ AR: "", EN: "" });
+      setCopuneLoading(true);
+      const data = {
+        user_id: userId,
+        account_type: type,
+        copune_code: copune,
+        card_type_id: id,
+      };
+      const response = await instance.post(`/check-copone-for-free-card`, data);
+      if (response.status == 201) {
+        setShowSuccessPopup(true);
+        setcopunePopup(false);
+        setCopune("");
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (error.status == 400) {
+        seterror({
+          EN: "Sorry, you cannot use the code more than once.",
+          AR: "عفوا لا يمكنك استخدام الكود اكثر من مرة",
+        });
+      }
+    } finally {
+      setCopuneLoading(false);
+    }
   };
 
   const handleCopy = async (text: string, type: "code" | "link") => {
@@ -169,9 +206,14 @@ export default function CardPage({ api }: props) {
 
   if (loading) return <Loading />;
 
+  console.log(error);
+
   return (
     <>
-      <div className="bg-gray-50 dark:bg-main_dash mt-20 ">
+      <div
+        style={{ direction: language == "EN" ? "ltr" : "rtl" }}
+        className="bg-gray-50 dark:bg-main_dash mt-20 "
+      >
         <div className="w-full  mx-auto p-3 max-md:p-2 flex items-start justify-between max-xl:flex-col  gap-3 mt-10">
           {/* البطاقة الرئيسية */}
           <motion.div
@@ -253,9 +295,16 @@ export default function CardPage({ api }: props) {
                 <FaLinkedin />
               </motion.button>
             </div>
-            <div className="button w-full mx-auto mt-6">
+            <div className="button w-full max-md:flex-col flex items-center gap-2 justify-center mx-auto mt-6">
               <div
-                className="w-[30%] max-xl:w-1/2 max-md:w-[90%]  mx-auto cursor-pointer h-[40px] flex items-center gap-4 duration-200 justify-center rounded-md shadow-md my-2 bg-main_orange text-white border border-transparent hover:border-main_orange hover:bg-white hover:text-black"
+                className=" w-1/4 max-lg:w-1/2 max-md:w-full cursor-pointer h-[40px] flex items-center gap-4 duration-200 justify-center rounded-md shadow-md my-2 bg-red-300 text-white border border-transparent hover:border-red-300 hover:bg-white hover:text-black"
+                onClick={() => setcopunePopup(true)}
+              >
+                <BiSolidOffer className="size-4 " />
+                <p>{language == "EN" ? "Have Copune ?" : "لديك كوبون ؟"}</p>
+              </div>
+              <div
+                className=" w-1/4 max-lg:w-1/2 max-md:w-full cursor-pointer h-[40px] flex items-center gap-4 duration-200 justify-center rounded-md shadow-md my-2 bg-main_orange text-white border border-transparent hover:border-main_orange hover:bg-white hover:text-black"
                 onClick={() => handlesubmit(card)}
               >
                 <FaMoneyBill className="size-4 " />
@@ -302,6 +351,65 @@ export default function CardPage({ api }: props) {
           </div>
         </div>
       )}
+      <AnimatePresence>
+        {copunePopup && (
+          <div className="w-full h-screen z-[999999] fixed top-0 left-0 bg-black/50 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0 }}
+              className=" bg-white relative  rounded-md shadow-md w-1/2 max-lg:w-3/4 max-md:w-[97%] pt-12 pb-4 px-2 flex items-center justify-center"
+            >
+              <FaTimes
+                onClick={() => setcopunePopup(false)}
+                className="w-fit  absolute top-2 right-2 text-red-400 cursor-pointer"
+              />
+              <div className="flex flex-col gap-4 w-full items-center">
+                <input
+                  name="copune"
+                  value={copune}
+                  onChange={(e) => setCopune(e.target.value)}
+                  type="text"
+                  className="w-full shadow-md border rounded-md  focus:outline-sky-400 outline outline-transparent py-4 px-2 "
+                  placeholder="Enter Your Copune ...."
+                />
+                <div
+                  onClick={handleUseCopuune}
+                  className="w-1/2 bg-main_orange rounded-md shadow-sm py-4 px-4 cursor-pointer hover:bg-white hover:border-main_orange border border-transparent hover:text-black duration-200 text-center text-white"
+                >
+                  {language == "EN" ? "Use Copune" : "إستخدم الكوبون"}
+                </div>
+                {copuneLoading && (
+                  <div className="w-full min-h-[10vh] flex items-center justify-center ">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      <AiOutlineLoading className="size-12 text-main_orange" />
+                    </motion.div>
+                  </div>
+                )}
+                {error && (
+                  <p className="text-red-400 text-center underline underline-red-400 ">
+                    {language == "EN" ? error.EN : error.AR}
+                  </p>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+        {showSuccessPopup && (
+          <SuccessPopup
+            message={
+              language == "EN"
+                ? "The Card Added in Your Box ."
+                : "مبروك تم إضافة البطاقة الى صندوق البطاقات الخاصة بك ."
+            }
+            onClose={() => setShowSuccessPopup(false)}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }

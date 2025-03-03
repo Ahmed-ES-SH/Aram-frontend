@@ -82,7 +82,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-100 dark:bg-main_dash mt-2 ">
+    <footer className="bg-gray-100 dark:bg-main_dash  ">
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="lg:flex lg:items-start lg:gap-8">
           <div className="text-teal-600 max-md:w-fit max-md:mx-auto">

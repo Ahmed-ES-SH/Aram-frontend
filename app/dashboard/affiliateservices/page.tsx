@@ -205,7 +205,7 @@ export default function AffiliateServices() {
         </div>
 
         {/* إضافة واجهة الفلتر */}
-        <div className="flex justify-center gap-4 max-md:flex-wrap mb-6">
+        {/* <div className="flex justify-center gap-4 max-md:flex-wrap mb-6">
           <button
             onClick={() => setFilterStatus("all")}
             className={`px-4 py-2 rounded-md ${
@@ -246,7 +246,7 @@ export default function AffiliateServices() {
           >
             تم التحديث
           </button>
-        </div>
+        </div> */}
 
         {/* عرض البيانات إذا كانت متوفرة */}
         {searchLoading ? (
@@ -295,7 +295,7 @@ export default function AffiliateServices() {
                         {service.status == "1" ? "تم النشر" : "لم يتم النشر"}
                       </p>
                     </motion.div>
-                    <motion.div
+                    {/* <motion.div
                       variants={cardVariants}
                       initial="hidden"
                       animate="visible"
@@ -321,7 +321,7 @@ export default function AffiliateServices() {
                           ? "فى انتظار التحقق"
                           : "تم تحديثها وفى انتظار التحقق"}
                       </p>
-                    </motion.div>
+                    </motion.div> */}
                   </div>
                 );
               })}

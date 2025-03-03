@@ -50,6 +50,11 @@ interface currentlocationType {
 export default function OrganizationDetails() {
   const { language }: any = UseVariables();
   const { currentuser, type } = useDataContext();
+  const defaultLocation = {
+    latitude: 21.4735,
+    longitude: 55.9754,
+    address: "سلطنة عمان",
+  };
   const params = useParams();
   const router = useRouter();
   const id = params.organizationid;
@@ -87,7 +92,11 @@ export default function OrganizationDetails() {
         const response = await instance.get(`/organization/${id}`);
         const data = response.data.data;
         setOrganization(data);
-        setcurrentlocation(JSON.parse(data.location));
+        setcurrentlocation(
+          typeof data.location == "string"
+            ? JSON.parse(data.location)
+            : data.location || defaultLocation
+        );
       } catch (error: any) {
         console.log(error);
       } finally {
@@ -180,9 +189,13 @@ export default function OrganizationDetails() {
                   {language === "EN" ? "Department" : "القسم"}
                 </h2>
                 <p className="text-gray-700 dark:text-gray-300">
-                  {organization?.categories[0].title_en && language == "EN"
-                    ? organization?.categories[0].title_en
-                    : organization?.categories[0].title_ar}
+                  {organization.categories.length > 0
+                    ? language == "EN"
+                      ? organization?.categories[0].title_en
+                      : organization?.categories[0].title_ar
+                    : language == "EN"
+                    ? "unknown Department"
+                    : "تصنيف غير محدد"}
                 </p>
               </motion.div>
 
@@ -240,24 +253,28 @@ export default function OrganizationDetails() {
                 </div>
 
                 {/* Contact Number */}
-                <div className="flex items-center gap-3">
-                  <FaPhoneAlt className="text-main_blue" size={24} />
-                  <p className="text-gray-700 dark:text-gray-300">
-                    {organization?.phone_number}
-                  </p>
-                </div>
+                {organization.phone_number && (
+                  <div className="flex items-center gap-3">
+                    <FaPhoneAlt className="text-main_blue" size={24} />
+                    <p className="text-gray-700 dark:text-gray-300">
+                      {organization?.phone_number}
+                    </p>
+                  </div>
+                )}
 
                 {/* Working Hours */}
-                <div className="flex items-center gap-3">
-                  <FaClock className="text-main_blue" size={24} />
-                  <p className="text-gray-700 dark:text-gray-300 tracking-[3px] ">
-                    {organization?.open_at +
-                      "AM" +
-                      "-" +
-                      organization?.close_at +
-                      "PM"}
-                  </p>
-                </div>
+                {organization.open_at && organization.close_at && (
+                  <div className="flex items-center gap-3">
+                    <FaClock className="text-main_blue" size={24} />
+                    <p className="text-gray-700 dark:text-gray-300 tracking-[3px] ">
+                      {organization?.open_at +
+                        "AM" +
+                        "-" +
+                        organization?.close_at +
+                        "PM"}
+                    </p>
+                  </div>
+                )}
               </motion.div>
 
               {/* Map */}
@@ -267,17 +284,21 @@ export default function OrganizationDetails() {
                 transition={{ duration: 0.7 }}
                 className="w-full h-[60vh] max-md:h-[35vh] rounded-lg overflow-hidden shadow-lg z-[50]"
               >
-                <MapComponent location={currentlocation} />
+                <MapComponent
+                  location={currentlocation ? currentlocation : defaultLocation}
+                />
               </motion.div>
             </div>
             <div className="button flex flex-col items-center gap-2 w-full mt-8 mx-auto">
-              <button
-                onClick={popupToggle}
-                className="w-[30%] max-lg:w-1/2 max-md:w-[90%]  mx-auto h-[40px] flex items-center gap-4 duration-200 justify-center rounded-md shadow-md my-2 bg-main_orange text-white border border-transparent hover:border-main_orange hover:bg-white hover:text-black"
-              >
-                <IoIosTime className="size-4 " />
-                <p>{language == "EN" ? "Book Now" : "إحجز الأن"}</p>
-              </button>
+              {organization?.booking_status && (
+                <button
+                  onClick={popupToggle}
+                  className="w-[30%] max-lg:w-1/2 max-md:w-[90%]  mx-auto h-[40px] flex items-center gap-4 duration-200 justify-center rounded-md shadow-md my-2 bg-main_orange text-white border border-transparent hover:border-main_orange hover:bg-white hover:text-black"
+                >
+                  <IoIosTime className="size-4 " />
+                  <p>{language == "EN" ? "Book Now" : "إحجز الأن"}</p>
+                </button>
+              )}
               <button
                 onClick={startConversation}
                 className="w-[30%] max-lg:w-1/2 max-md:w-[90%]  mx-auto h-[40px] flex items-center gap-4 duration-200 justify-center rounded-md shadow-md my-2 bg-main_blue text-white border border-transparent hover:border-main_blue hover:bg-white hover:text-black"

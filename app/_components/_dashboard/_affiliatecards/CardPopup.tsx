@@ -196,8 +196,8 @@ export default function CardPopup({
             </h3>
             <p className="text-gray-600 mb-4">
               {lang === "en"
-                ? "The following notification will be sent to the user:"
-                : "سيتم إرسال الإشعار التالي إلى المركز الطبى :"}
+                ? "The following notification will be sent to the organization:"
+                : "سيتم إرسال الإشعار التالي إلى المنظمة :"}
             </p>
             <textarea
               className="w-full p-2 border border-gray-300 rounded-lg outline-none mb-4"

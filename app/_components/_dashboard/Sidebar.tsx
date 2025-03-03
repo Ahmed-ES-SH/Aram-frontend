@@ -39,11 +39,6 @@ export default function Sidebar(): JSX.Element {
           to: "/dashboard/selectedcards",
         },
         {
-          title: "الخدمات المختارة",
-          image: "/dashboard/services-2.png",
-          to: "/dashboard/selectedservices",
-        },
-        {
           title: "المقالات المختارة",
           image: "/dashboard/blog.png",
           to: "/dashboard/selectedarticals",
